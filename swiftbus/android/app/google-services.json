@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "536574508761",
+    "project_id": "uee-swiftbus",
+    "storage_bucket": "uee-swiftbus.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536574508761:android:f1ac6ebfd3c106759c88c8",
+        "android_client_info": {
+          "package_name": "com.example.swiftbus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUzduoX0zAEAivXqMBfXlwJ6eTJJMbMm0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536574508761:android:04f4332a474c82359c88c8",
+        "android_client_info": {
+          "package_name": "com.swiftbus.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUzduoX0zAEAivXqMBfXlwJ6eTJJMbMm0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
