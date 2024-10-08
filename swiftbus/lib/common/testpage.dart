@@ -12,7 +12,7 @@ class testPage extends StatelessWidget {
       body: const Center(
         child: Text(
           'This is the test page.',
-          style: TextStyle(fontSize: 24),
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
     );

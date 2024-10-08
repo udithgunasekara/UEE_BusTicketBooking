@@ -41,6 +41,7 @@ dependencies:
   fluttertoast: ^8.2.8
   firebase_storage: ^12.3.2
   shared_preferences: ^2.3.2
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -79,7 +80,7 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
-  #   - family: Schyler
+  #   - family: Inter
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
