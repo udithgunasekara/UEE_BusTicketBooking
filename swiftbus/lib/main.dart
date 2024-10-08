@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:swiftbus/authentication/signupPage.dart';
 import 'package:swiftbus/common/Home.dart';
 
-
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
