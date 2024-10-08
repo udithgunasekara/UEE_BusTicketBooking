@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:popover/popover.dart';
 import 'package:swiftbus/common/NavBar.dart';
+import 'package:swiftbus/UserSupport/Passenger/UserSupport.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -17,11 +19,11 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.orange,
         elevation: 0,
         shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20.0),
-          bottomRight: Radius.circular(20.0),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20.0),
+            bottomRight: Radius.circular(20.0),
+          ),
         ),
-      ),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -31,20 +33,26 @@ class _HomeState extends State<Home> {
             ),
             IconButton(
               icon: const Icon(Icons.settings, color: Colors.black),
-              onPressed: () {
-                // Settings action here
-              },
+              onPressed: () {},
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add the action you want to perform here
-          print("Floating Action Button Pressed");
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.support_agent),
+      floatingActionButton: Builder(
+        builder: (context) => FloatingActionButton(
+          onPressed: () {
+            showPopover(
+                  context: context,
+                  bodyBuilder: (context) => Popup(),
+                  width: 250, 
+                  height: 166,
+                  backgroundColor: Colors.transparent,
+                  direction: PopoverDirection.top
+                );
+          },
+          tooltip: 'pop up box',
+          child: const Icon(Icons.support_agent),
+        ),
       ),
       bottomNavigationBar: Navbar(),
     );

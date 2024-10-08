@@ -12,6 +12,7 @@ Widget Navbar() {
     child: BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       backgroundColor: Colors.transparent,
+      elevation: 0,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
