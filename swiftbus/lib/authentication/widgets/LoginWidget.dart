@@ -62,7 +62,7 @@ class Loginwidget extends StatelessWidget {
                 )),
 
                 const SizedBox(
-                  height: 20,
+                  height: 30,
                 ),
 
                 //password
@@ -118,7 +118,7 @@ class Loginwidget extends StatelessWidget {
                       )),
                 ),
                 const SizedBox(
-                  height: 15,
+                  height: 10,
                 ),
                 //Sign in button
                 ElevatedButton(
@@ -139,7 +139,7 @@ class Loginwidget extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     )),
                 const SizedBox(
-                  height: 20,
+                  height: 15,
                 ),
                 //other login methods
                 const Text(
@@ -177,7 +177,7 @@ class Loginwidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 18),
                 // New User? Register
                 Align(
                   alignment: Alignment.centerLeft,
