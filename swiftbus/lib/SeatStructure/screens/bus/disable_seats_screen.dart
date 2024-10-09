@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import '../widgets/seat_layout.dart';
-import '../widgets/legend.dart';
+import '../../models/bus_model.dart';
+import '../../widgets/seat_layout.dart';
+import '../../widgets/legend.dart';
 
 class DisableSeatsScreen extends StatefulWidget {
   final Set<int> initialDisabledSeats;
+  final BusModel busModel;
 
-  DisableSeatsScreen({required this.initialDisabledSeats});
+  DisableSeatsScreen({
+    required this.initialDisabledSeats,
+    required this.busModel,
+  });
 
   @override
   _DisableSeatsScreenState createState() => _DisableSeatsScreenState();
@@ -37,35 +42,46 @@ class _DisableSeatsScreenState extends State<DisableSeatsScreen> {
           children: [
             Expanded(
               child: SeatLayout(
-                disabledSeats: disabledSeats,
+                seatMap: widget.busModel.seatMap,
+                disabledSeats: Set(), // Pass an empty set here
                 onSeatTap: _toggleSeatDisabled,
-                seatColor: (seatNumber) => disabledSeats.contains(seatNumber)
-                    ? Color(0xffff9800)
-                    : Colors.white,
+                seatColor: (seatNumber) {
+                  if (disabledSeats.contains(seatNumber)) {
+                    return Color(0xffff9800); // Color for disabled seats
+                  }
+                  return Colors.white; // Color for available seats
+                },
                 legendItems: [
                   LegendItem(color: Colors.white, label: 'Available'),
                   LegendItem(color: Color(0xffff9800), label: 'Disabled'),
                 ],
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(16),
-              child: ElevatedButton(
-                onPressed: () => Navigator.pop(context, disabledSeats),
-                child: Text(
-                  'Confirm Disabled Seats',
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xffff9800),
-                  minimumSize: Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8)),
-                ),
-              ),
-            ),
+            _buildConfirmButton(),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildConfirmButton() {
+    return Container(
+      padding: EdgeInsets.all(16),
+      child: ElevatedButton(
+        onPressed: () => Navigator.pop(context, disabledSeats),
+        child: Text(
+          'Confirm Disabled Seats',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Color(0xffff9800),
+          minimumSize: Size(double.infinity, 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
         ),
       ),
     );

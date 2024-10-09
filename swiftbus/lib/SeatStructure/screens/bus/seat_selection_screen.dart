@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
-import '../widgets/seat_layout.dart';
-import '../widgets/legend.dart';
-import 'reservations_screen.dart';
-import '../widgets/trip_info.dart';
+import '../../models/bus_model.dart';
+import '../../widgets/seat_layout.dart';
+import '../../widgets/legend.dart';
+import '../reservations/reservations_screen.dart';
+import '../payment_screen.dart'; // Import the PaymentScreen
 
 class SeatSelectionScreen extends StatefulWidget {
   final Set<int> disabledSeats;
+  final BusModel busModel;
 
-  SeatSelectionScreen({required this.disabledSeats});
+  SeatSelectionScreen({
+    required this.disabledSeats,
+    required this.busModel,
+  });
 
   @override
   _SeatSelectionScreenState createState() => _SeatSelectionScreenState();
@@ -24,23 +29,18 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _buildAppBar(),
-            TripInfo(
-              from: 'Panadura',
-              to: 'Kandy',
-              date: '08 Sep 2024',
-              time: '03:30 AM',
-              availableSeats: 56 - widget.disabledSeats.length,
-            ),
             Expanded(
               child: SeatLayout(
+                seatMap: widget.busModel.seatMap,
                 disabledSeats: widget.disabledSeats,
                 onSeatTap: _toggleSeatSelection,
                 seatColor: (seatNumber) {
                   if (widget.disabledSeats.contains(seatNumber)) {
                     return Colors.blue[700]!;
                   }
-                  if (selectedSeats.contains(seatNumber))
+                  if (selectedSeats.contains(seatNumber)) {
                     return Colors.green[400]!;
+                  }
                   return Colors.white;
                 },
                 legendItems: [
@@ -78,7 +78,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
               textAlign: TextAlign.center,
             ),
           ),
-          SizedBox(width: 48), // Balance the layout
+          SizedBox(width: 48),
         ],
       ),
     );
@@ -123,13 +123,8 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
   void _completeBooking() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => ReservationsScreen(
-          from: 'Panadura',
-          to: 'Kandy',
-          date: '08 Sep 2024',
-          time: '03:30 AM',
-          reservedSeats: selectedSeats.toList(),
-          disabledSeats: widget.disabledSeats.toList(),
+        builder: (context) => PaymentScreen(
+          bookedSeats: selectedSeats.toList(), // Pass the booked seats here
         ),
       ),
     );

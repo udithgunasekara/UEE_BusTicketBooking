@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'legend.dart';
 
 class SeatLayout extends StatelessWidget {
+  final List<List<int?>> seatMap;
   final Set<int> disabledSeats;
   final Function(int)? onSeatTap;
   final Color Function(int) seatColor;
@@ -9,6 +10,7 @@ class SeatLayout extends StatelessWidget {
 
   const SeatLayout({
     Key? key,
+    required this.seatMap,
     required this.disabledSeats,
     required this.onSeatTap,
     required this.seatColor,
@@ -17,20 +19,6 @@ class SeatLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<List<int?>> seatMap = [
-      [01, 02, null, 03, 04, 05],
-      [06, 07, null, 08, 09, 10],
-      [11, 12, null, 13, 14, 15],
-      [16, 17, null, 18, 19, 20],
-      [21, 22, null, 23, 24, 25],
-      [26, 27, null, 28, 29, 30],
-      [31, 32, null, 34, 35, 36],
-      [37, 38, null, 39, 40, 41],
-      [42, 43, null, 44, 45, 46],
-      [47, 48, null, 49, 50, 51],
-      [52, 53, null, 54, 55, 56],
-    ];
-
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
@@ -68,6 +56,14 @@ class SeatLayout extends StatelessWidget {
   Widget _buildBusHeader() {
     return Container(
       padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.grey[300]!,
+            width: 1,
+          ),
+        ),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -76,10 +72,14 @@ class SeatLayout extends StatelessWidget {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: Colors.black87,
             ),
           ),
-          Icon(Icons.directions_bus, size: 32, color: Colors.black),
+          Icon(
+            Icons.directions_bus,
+            size: 32,
+            color: Colors.black87,
+          ),
         ],
       ),
     );
@@ -96,12 +96,14 @@ class SeatLayout extends StatelessWidget {
             child: Text(
               String.fromCharCode(65 + rowIndex),
               style: TextStyle(
-                  fontWeight: FontWeight.bold, color: Color(0xff000000)),
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
             ),
           ),
           ...row.map((seatNumber) {
             if (seatNumber == null) {
-              return SizedBox(width: 16);
+              return SizedBox(width: 16); // Aisle space
             } else {
               return _buildSeat(seatNumber);
             }
@@ -113,6 +115,7 @@ class SeatLayout extends StatelessWidget {
 
   Widget _buildSeat(int seatNumber) {
     bool isDisabled = disabledSeats.contains(seatNumber);
+
     return GestureDetector(
       onTap: onSeatTap != null && !isDisabled
           ? () => onSeatTap!(seatNumber)
@@ -124,7 +127,10 @@ class SeatLayout extends StatelessWidget {
         decoration: BoxDecoration(
           color: seatColor(seatNumber),
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.black12),
+          border: Border.all(
+            color: Colors.black12,
+            width: 1,
+          ),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.05),
