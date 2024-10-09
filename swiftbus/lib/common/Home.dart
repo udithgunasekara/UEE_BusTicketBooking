@@ -51,10 +51,12 @@ class _HomeState extends State<Home> {
                 );
           },
           tooltip: 'pop up box',
+          backgroundColor: Colors.orange,
+          shape: const CircleBorder(),
           child: const Icon(Icons.support_agent),
         ),
       ),
-      bottomNavigationBar: Navbar(),
+      bottomNavigationBar: Navbar(context),
     );
   }
 }
