@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:swiftbus/UserSupport/Conductor/ViewUserRequest.dart';
 import 'package:swiftbus/UserSupport/Service/DatabaseMethods.dart';
+import 'package:swiftbus/common/Home.dart';
 import 'package:swiftbus/common/inbox.dart';
 
 Widget Navbar(BuildContext context) {
@@ -69,10 +71,20 @@ Widget Navbar(BuildContext context) {
           onTap: (int index) {
             switch (index) {
               case 0:
-                // Handle Home navigation
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Home(),
+                  ),
+                );
                 break;
               case 1:
-                // Handle Support navigation
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ViewUserRequest(),
+                  ),
+                );
                 break;
               case 2:
                 // Navigate to Notification screen

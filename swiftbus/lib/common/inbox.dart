@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:swiftbus/UserSupport/Service/DatabaseMethods.dart';
+import 'package:swiftbus/common/NavBar.dart';
 
 class Inbox extends StatefulWidget {
   const Inbox({super.key});
@@ -16,7 +17,28 @@ class _InboxState extends State<Inbox> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Notifications"),
+        toolbarHeight: 100,
+        backgroundColor: Colors.orange,
+        elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20.0),
+            bottomRight: Radius.circular(20.0),
+          ),
+        ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              'Notification',
+              style: TextStyle(fontSize: 24, color: Colors.black),
+            ),
+            IconButton(
+              icon: const Icon(Icons.settings, color: Colors.black),
+              onPressed: () {},
+            ),
+          ],
+        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: DatabaseMethods().getaNotification(widget.busId), // Stream of notifications
@@ -88,6 +110,7 @@ class _InboxState extends State<Inbox> {
           );
         },
       ),
+      bottomNavigationBar: Navbar(context),
     );
   }
 }
