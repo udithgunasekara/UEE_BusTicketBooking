@@ -17,10 +17,10 @@ class DatabaseMethods {
     }
   }
 
-  Stream<QuerySnapshot> getaRequest(String userId) {
+  Stream<QuerySnapshot> getaRequest(String busid) {
     return FirebaseFirestore.instance
         .collection("UserSupport")
-        .where('receiver', isEqualTo: userId)
+        .where('busid', isEqualTo: busid)
         .snapshots();
   }
 

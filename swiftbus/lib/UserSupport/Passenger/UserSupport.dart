@@ -227,7 +227,7 @@ class Popup extends StatelessWidget {
                       if(askHelpFromPassengers){
                         DatabaseMethods().createNotification(userId, 'Passenger ask for help to find his lost item. Description: "$message"', busId);
                       }
-                      DatabaseMethods().createRequest(userId, message, 'High', '0', busId);
+                      DatabaseMethods().createRequest(userId, 'Passenger ask for help to find his lost item. Description: "$message"', 'High', '0', busId);
                       Navigator.of(context).pop();
                     },
                   ),
