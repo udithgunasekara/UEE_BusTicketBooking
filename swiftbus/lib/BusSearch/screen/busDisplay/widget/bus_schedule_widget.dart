@@ -88,9 +88,9 @@ class _BusScheduleWidgetState extends State<BusScheduleWidget> {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             // const SizedBox(height: 8),
             _buildRouteInfo(
-                busDetails!['startLocation'],
-                busDetails!['destination'],
-                busDetails!['departureTime'],
+                busDetails?['startLocation'] ?? 'Unknown Start Location',
+                busDetails?['destination'] ?? 'Unknown Destination',
+                busDetails?['departureTime'] ?? 'Unknown Time',
                 '10:00 AM'),
             // const SizedBox(height: 16),
             const Text('Your destination',
