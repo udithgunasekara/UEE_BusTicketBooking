@@ -3,7 +3,7 @@ import 'package:swiftbus/BusSearch/service/firestore.dart';
 
 class PaymentSummary extends StatefulWidget {
   final double totalPayment;
-  final String price;
+  String price = '150.0';
   final List<int> seatNumbers;
   final String to;
   final String from;
@@ -15,7 +15,17 @@ class PaymentSummary extends StatefulWidget {
       required this.to,
       required this.from,
       required this.busNo})
-      : totalPayment = (double.parse(price) * seatNumbers.length);
+      : totalPayment = _calculateTotalPayment(price, seatNumbers);
+
+  static double _calculateTotalPayment(String price, List<int> seatNumbers) {
+    double total = 0.0;
+    try {
+      total = double.parse(price) * seatNumbers.length;
+    } catch (e) {
+      print('Error parsing price: $e');
+    }
+    return total;
+  }
 
   @override
   State<PaymentSummary> createState() => _PaymentSummaryState();

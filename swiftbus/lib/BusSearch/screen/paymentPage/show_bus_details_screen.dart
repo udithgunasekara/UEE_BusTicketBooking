@@ -60,7 +60,7 @@ class _ShowBusDetailsScreenState extends State<ShowBusDetailsScreen> {
 
   final double totalPayment = 150.0;
   // calculation
-  String get fullPrice => busDetails?['price'];
+  String get fullPrice => busDetails?['price'] ?? 'Unknown price';
   //props
   final String userName = 'John Doe';
   // google auth
