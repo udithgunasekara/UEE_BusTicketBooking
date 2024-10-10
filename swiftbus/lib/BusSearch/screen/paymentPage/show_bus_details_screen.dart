@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:swiftbus/BusSearch/screen/paymentPage/widget/bus_detail_card.dart';
 import 'package:swiftbus/BusSearch/screen/paymentPage/widget/payment_summary.dart';
 import 'package:swiftbus/BusSearch/service/firestore.dart';
+import 'package:swiftbus/common/NavBar.dart';
 
 class ShowBusDetailsScreen extends StatefulWidget {
   final String to;
@@ -102,6 +103,7 @@ class _ShowBusDetailsScreenState extends State<ShowBusDetailsScreen> {
           ),
         ),
       ),
+      bottomNavigationBar: Navbar(context),
     );
   }
 }
