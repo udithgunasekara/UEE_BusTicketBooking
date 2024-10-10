@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:popover/popover.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftbus/UserSupport/Service/DatabaseMethods.dart';
 import 'package:swiftbus/common/NavBar.dart';
 import 'package:swiftbus/UserSupport/Passenger/UserSupport.dart';
@@ -14,12 +15,22 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String? busId;
-  String? userId = 'C001';
+  String? userId;
+
+  Future<void> _checkUserIdInPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? storedUserId = prefs.getString('userID');
+    if (storedUserId != null) {
+      setState(() {
+        userId = storedUserId;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    // Stream to listen for busId changes and update it
+    _checkUserIdInPreferences();
     DatabaseMethods().getBusId(userId!).listen((snapshot) {
       if (snapshot.docs.isNotEmpty) {
         setState(() {
@@ -32,6 +43,7 @@ class _HomeState extends State<Home> {
       }
     });
   }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

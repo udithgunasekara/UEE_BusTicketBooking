@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftbus/UserSupport/Service/DatabaseMethods.dart';
 import 'package:swiftbus/common/NavBar.dart';
 
@@ -12,12 +13,22 @@ class ViewUserRequest extends StatefulWidget {
 
 class _ViewUserRequestState extends State<ViewUserRequest> {
   String? busId;
-  String? userId = 'C001';
+  String? userId;
+
+  Future<void> _checkUserIdInPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? storedUserId = prefs.getString('userID');
+    if (storedUserId != null) {
+      setState(() {
+        userId = storedUserId;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    // Stream to listen for busId changes and update it
+    _checkUserIdInPreferences();
     DatabaseMethods().getBusId(userId!).listen((snapshot) {
       if (snapshot.docs.isNotEmpty) {
         setState(() {
