@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftbus/UserSupport/Service/DatabaseMethods.dart';
 import 'package:swiftbus/common/NavBar.dart';
 
@@ -11,12 +12,23 @@ class ConductorHome extends StatefulWidget {
 
 class _ConductorHomeState extends State<ConductorHome> {
   String? busId;
-  String? userId = 'C001';
+  String? userId;
+
+  Future<void> _checkUserIdInPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? storedUserId = prefs.getString('userID');
+    if (storedUserId != null) {
+      setState(() {
+        userId = storedUserId;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     // Stream to listen for busId changes and update it
+    _checkUserIdInPreferences();
     DatabaseMethods().getBusId(userId!).listen((snapshot) {
       if (snapshot.docs.isNotEmpty) {
         setState(() {
