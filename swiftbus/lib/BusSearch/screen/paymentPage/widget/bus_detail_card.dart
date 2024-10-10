@@ -2,30 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:swiftbus/common/RouteIcon.dart';
 
 class BusDetailCard extends StatelessWidget {
+  final String to;
+  final String from;
+  final String toTime;
+  final String fromTime;
+  final List<int> seatNumbers; //temp data
+
+  BusDetailCard(
+      {required this.to,
+      required this.from,
+      required this.toTime,
+      required this.fromTime,
+      required this.seatNumbers});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 16, horizontal: 4),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildDetailRow('Total Passenger', '2'),
+          _buildDetailRow('Total Passenger',
+              seatNumbers.length.toString()), // get length for total passengers
           const SizedBox(height: 10),
-          _buildDetailRow('Booked seats', '01, 13'),
-          const SizedBox(height: 16),
-          const Text('Destination',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
-          const Row(
+          _buildDetailRow(
+              'Booked seats', seatNumbers.join(', ')), // added seates
+          const SizedBox(height: 25),
+          const Text('Your Destination',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              )),
+          const SizedBox(height: 12),
+          Row(
             children: [
               Expanded(
-                child: Text('Malabe',
+                child: Text(to,
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
               RouteIcon(width: 90),
               Expanded(
-                child: Text('Panadura',
+                child: Text(from,
                     textAlign: TextAlign.right,
                     style:
                         TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
@@ -35,18 +53,18 @@ class BusDetailCard extends StatelessWidget {
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Departure Time',
+              Text('OnBoard Time',
                   style: TextStyle(fontSize: 14, color: Colors.grey)),
               Text('Arrival Time',
                   style: TextStyle(fontSize: 14, color: Colors.grey)),
             ],
           ),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('9.20 AM',
+              Text(toTime,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              Text('10.00 AM',
+              Text(fromTime,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             ],
           ),
@@ -57,8 +75,9 @@ class BusDetailCard extends StatelessWidget {
 
   Widget _buildDetailRow(String label, String value) {
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      Text(label, style: TextStyle(fontSize: 18)),
-      Text(value, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+      Text(label, style: const TextStyle(fontSize: 18)),
+      Text(value,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
     ]);
   }
 }

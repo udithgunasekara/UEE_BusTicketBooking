@@ -1,8 +1,25 @@
 //
 
 import 'package:flutter/material.dart';
+import 'package:swiftbus/BusSearch/screen/paymentPage/show_bus_details_screen.dart';
+import 'package:swiftbus/SeatStructure/screens/seat_selection_screen.dart';
 
 class BookingButton extends StatelessWidget {
+  final String ett;
+  final String fromTime;
+  final String toTime;
+  final String to;
+  final String from;
+  final String docId;
+
+  BookingButton(
+      {required this.ett,
+      required this.fromTime,
+      required this.toTime,
+      required this.to,
+      required this.from,
+      required this.docId});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -17,7 +34,7 @@ class BookingButton extends StatelessWidget {
               color: const Color(0xFFFD6905),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Column(
+            child: Column(
               children: [
                 Text(
                   'Estimated Travel Time',
@@ -25,7 +42,7 @@ class BookingButton extends StatelessWidget {
                 ),
                 // SizedBox(height: 5),
                 Text(
-                  '15 mins',
+                  '$ett Hr',
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 15,
@@ -40,6 +57,19 @@ class BookingButton extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               // Handle booking action
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        // SeatSelectionScreen(disabledSeats: {1, 2, 3})),
+                        ShowBusDetailsScreen(
+                          to: to,
+                          from: from,
+                          toTime: toTime,
+                          fromTime: fromTime,
+                          docId: docId,
+                        )),
+              );
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green,
