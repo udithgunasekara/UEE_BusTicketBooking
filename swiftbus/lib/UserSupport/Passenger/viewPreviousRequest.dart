@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:swiftbus/UserSupport/Service/DatabaseMethods.dart';
 import 'package:swiftbus/common/NavBar.dart';
 
-class ViewUserRequest extends StatefulWidget {
-  const ViewUserRequest({super.key});
+class ViewPreviousRequests extends StatefulWidget {
+  const ViewPreviousRequests({super.key});
 
   @override
-  State<ViewUserRequest> createState() => _ViewUserRequestState();
+  State<ViewPreviousRequests> createState() => ViewPreviousRequestsState();
 }
 
-String? busId = 'B001';
+String? userId = 'C001';
 
-class _ViewUserRequestState extends State<ViewUserRequest> {
+class ViewPreviousRequestsState extends State<ViewPreviousRequests> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +30,7 @@ class _ViewUserRequestState extends State<ViewUserRequest> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text(
-              'Requestes',
+              'Previous Requestes',
               style: TextStyle(fontSize: 24, color: Colors.black),
             ),
             IconButton(
@@ -41,7 +41,7 @@ class _ViewUserRequestState extends State<ViewUserRequest> {
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: DatabaseMethods().getaRequest(busId),
+        stream: DatabaseMethods().getaRequestByUserId(userId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

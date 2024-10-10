@@ -28,6 +28,13 @@ class DatabaseMethods {
         .snapshots();
   }
 
+  Stream<QuerySnapshot> getaRequestByUserId(String? userId) {
+    return FirebaseFirestore.instance
+        .collection("UserSupport")
+        .where('sender', isEqualTo: userId)
+        .snapshots();
+  }
+
   Future<void> createNotification(String senderid, String message, String busId) async {
     try {
       await FirebaseFirestore.instance.collection("Notification").doc().set({
