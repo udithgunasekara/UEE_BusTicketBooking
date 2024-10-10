@@ -151,6 +151,7 @@ import '../widgets/seat_layout.dart';
 import '../widgets/legend.dart';
 import 'reservations_screen.dart';
 import '../widgets/trip_info.dart';
+import 'package:swiftbus/BusSearch/screen/paymentPage/show_bus_details_screen.dart';
 
 class SeatSelectionScreen extends StatefulWidget {
   final Set<int> disabledSeats;
@@ -288,14 +289,13 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
   void _completeBooking() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => ReservationsScreen(
+        builder: (context) => ShowBusDetailsScreen(
           from: widget.from,
           to: widget.to,
-          date: '08 Sep 2024',
-          time: widget.fromTime,
-          reservedSeats: selectedSeats.toList(),
-          disabledSeats: widget.disabledSeats.toList(),
-          busModel: widget.busModel,
+          toTime: widget.toTime,
+          fromTime: widget.fromTime,
+          docId: widget.docId,
+          seatNumbers: selectedSeats.toList(),
         ),
       ),
     );
