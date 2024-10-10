@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:swiftbus/UserSupport/Service/DatabaseMethods.dart';
 
 class Popup extends StatelessWidget {
-  const Popup({super.key});
+  final String userId;
+  final String busId;
 
-  final String userId = 'C001';
-  final String busId = "B001";
+  const Popup({
+    super.key,
+    required this.userId,
+    required this.busId,
+  });
 
   // Function for "Request Changes" pop-up
   void _ReqestChanges(BuildContext context) {

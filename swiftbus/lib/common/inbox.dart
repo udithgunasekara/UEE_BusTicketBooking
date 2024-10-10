@@ -6,13 +6,30 @@ import 'package:swiftbus/common/NavBar.dart';
 class Inbox extends StatefulWidget {
   const Inbox({super.key});
 
-  final String busId = 'B001';
-
   @override
   State<Inbox> createState() => _InboxState();
 }
 
 class _InboxState extends State<Inbox> {
+  String? busId;
+  String? userId = 'C001';
+
+  @override
+  void initState() {
+    super.initState();
+    // Stream to listen for busId changes and update it
+    DatabaseMethods().getBusId(userId!).listen((snapshot) {
+      if (snapshot.docs.isNotEmpty) {
+        setState(() {
+          busId = snapshot.docs.first['busid'];
+        });
+      } else {
+        setState(() {
+          busId = null;
+        });
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,8 +57,9 @@ class _InboxState extends State<Inbox> {
           ],
         ),
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: DatabaseMethods().getaNotification(widget.busId), // Stream of notifications
+      body: 
+      StreamBuilder<QuerySnapshot>(
+        stream: DatabaseMethods().getaNotification(busId!), // Stream of notifications
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

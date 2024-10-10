@@ -57,25 +57,57 @@ class DatabaseMethods {
         .snapshots();
   }
 
-  Future<void> setNotificationAsRead(String lockId, String tolockId, String userId) async {
-  try {
-    QuerySnapshot snapshot = await FirebaseFirestore.instance
-        .collection("TransferLocker")
-        .where("lockid", isEqualTo: lockId)
-        .where("userid", isEqualTo: userId)
-        .where("tolockid", isEqualTo: tolockId)
-        .get();
-
-    if (snapshot.docs.isNotEmpty) {
-      await snapshot.docs.first.reference.update({
-        "inprogress": true,
-      });
-      print("Transfer locker updated successfully.");
-    } else {
-      print("No transfer locker found with the provided lockId.$tolockId");
-    }
-  } catch (e) {
-    print("Error updating transfer locker: $e");
+  Stream<QuerySnapshot> getBusId(String userId) {
+    return FirebaseFirestore.instance
+        .collection("users")
+        .where('uid', isEqualTo: userId)
+        .snapshots();
   }
-}
+
+  Future<void> updateUsersWithBusId(String busId) async {
+    try {
+      Stream<QuerySnapshot> snapshotStream = getUserId(busId);
+
+      snapshotStream.listen((QuerySnapshot snapshot) async {
+        if (snapshot.docs.isNotEmpty) {
+          for (var doc in snapshot.docs) {
+            String userId = doc["uid"];
+            await setBusNo(userId, busId);
+          }
+        } else {
+          print("No users found for the bus with busId: $busId");
+        }
+      });
+    } catch (e) {
+      print("Error retrieving user IDs: $e");
+    }
+  }
+
+
+  Stream<QuerySnapshot> getUserId(String busId) {
+    return FirebaseFirestore.instance
+        .collection("bookedUsers")
+        .where('busid', isEqualTo: busId)
+        .snapshots();
+  }
+
+  Future<void> setBusNo(String userId, String busId) async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection("users")
+          .where("uid", isEqualTo: userId)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        await snapshot.docs.first.reference.update({
+          "busid": busId,
+        });
+        print("user updated successfully.");
+      } else {
+        print("No user found with the provided uid.");
+      }
+    } catch (e) {
+      print("Error updating user: $e");
+    }
+  }
 }

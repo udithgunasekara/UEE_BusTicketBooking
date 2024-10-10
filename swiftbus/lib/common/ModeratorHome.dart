@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:popover/popover.dart';
 import 'package:swiftbus/UserSupport/Service/DatabaseMethods.dart';
 import 'package:swiftbus/common/NavBar.dart';
-import 'package:swiftbus/UserSupport/Passenger/UserSupport.dart';
-import 'package:swiftbus/common/ScanQr.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class ConductorHome extends StatefulWidget {
+  const ConductorHome({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<ConductorHome> createState() => _ConductorHomeState();
 }
 
-class _HomeState extends State<Home> {
+class _ConductorHomeState extends State<ConductorHome> {
   String? busId;
   String? userId = 'C001';
 
@@ -57,33 +54,6 @@ class _HomeState extends State<Home> {
               onPressed: () {},
             ),
           ],
-        ),
-      ),
-      floatingActionButton: Builder(
-        builder: (context) => FloatingActionButton(
-          onPressed: () {
-            if(busId == null){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SacnQr(),
-                  ),
-                );
-            }else{
-              showPopover(
-                context: context,
-                bodyBuilder: (context) => Popup(userId: userId!, busId: busId!),
-                width: 250, 
-                height: 166,
-                backgroundColor: Colors.transparent,
-                direction: PopoverDirection.top
-              );
-            }
-          },
-          tooltip: 'pop up box',
-          backgroundColor: Colors.orange,
-          shape: const CircleBorder(),
-          child: const Icon(Icons.support_agent),
         ),
       ),
       bottomNavigationBar: Navbar(context),

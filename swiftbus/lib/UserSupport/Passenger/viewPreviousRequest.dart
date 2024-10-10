@@ -10,9 +10,8 @@ class ViewPreviousRequests extends StatefulWidget {
   State<ViewPreviousRequests> createState() => ViewPreviousRequestsState();
 }
 
-String? userId = 'C001';
-
 class ViewPreviousRequestsState extends State<ViewPreviousRequests> {
+  String? userId = 'C001';
   @override
   Widget build(BuildContext context) {
     return Scaffold(

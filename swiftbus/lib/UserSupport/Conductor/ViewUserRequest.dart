@@ -10,9 +10,26 @@ class ViewUserRequest extends StatefulWidget {
   State<ViewUserRequest> createState() => _ViewUserRequestState();
 }
 
-String? busId = 'B001';
-
 class _ViewUserRequestState extends State<ViewUserRequest> {
+  String? busId;
+  String? userId = 'C001';
+
+  @override
+  void initState() {
+    super.initState();
+    // Stream to listen for busId changes and update it
+    DatabaseMethods().getBusId(userId!).listen((snapshot) {
+      if (snapshot.docs.isNotEmpty) {
+        setState(() {
+          busId = snapshot.docs.first['busid'];
+        });
+      } else {
+        setState(() {
+          busId = null;
+        });
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
