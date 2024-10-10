@@ -73,9 +73,8 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                     //png image
-                    const SizedBox(height: 13),
                     Padding(
-                      padding: EdgeInsets.only(bottom: 1),
+                      padding: const EdgeInsets.only(bottom: 1),
                       child: Image.asset(
                         'assets/bus_queue.png',
                         height: 200,

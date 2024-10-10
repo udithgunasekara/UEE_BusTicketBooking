@@ -1,15 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:swiftbus/authentication/services/firebase_authservice.dart';
 
 class Signupwidget extends StatefulWidget {
-
   const Signupwidget({super.key});
-
   @override
   State<Signupwidget> createState() => _SignupwidgetState();
 }
 
 class _SignupwidgetState extends State<Signupwidget> {
+  final TextEditingController _firstnameController = TextEditingController();
+  final TextEditingController _lastnameController = TextEditingController();
+  final TextEditingController _emailController= TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _conPasswordController = TextEditingController();
+  final AuthService _auth = AuthService();
   bool isPassenger = true;
+  String? _errormessage;
+
+  //booleans to track if field is empty
+  bool _isFirstNameEmpty = false;
+  bool _isLastNameEmpty = false;
+  bool _isEmailEmpty = false;
+  bool _isPasswordEmpty = false;
+  bool _isConPasswordEmpty = false;
+
+
+  Future<void> _signup() async {
+    setState(() {
+      _isFirstNameEmpty = _firstnameController.text.isEmpty;
+      _isLastNameEmpty = _lastnameController.text.isEmpty;
+      _isEmailEmpty = _emailController.text.isEmpty;
+      _isPasswordEmpty = _passwordController.text.isEmpty;
+      _isConPasswordEmpty = _conPasswordController.text.isEmpty;
+    });
+
+    if(_isFirstNameEmpty ||_isLastNameEmpty ||_isEmailEmpty ||_isPasswordEmpty || _isConPasswordEmpty){
+      setState(() {
+          _errormessage = "Please fill in all fields";
+      });
+      return;
+    }
+
+    if(_passwordController.text == _conPasswordController.text){
+        var error = await _auth.registerWithEmailAndPassword(_emailController.text, _passwordController.text,_firstnameController.text, _lastnameController.text, isPassenger);
+        if(error != null){
+          setState(() {
+            _errormessage = error;
+          });
+        }else{
+          Navigator.pushReplacementNamed(context, '/login');
+        }
+      }else{
+        setState(() {
+          _errormessage = "Passwords do not match. Re-enter password";
+        });
+      }
+  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -149,67 +196,77 @@ class _SignupwidgetState extends State<Signupwidget> {
                             // FirstName
                             TextField(
                                 decoration: InputDecoration(
-                              labelText: "First Name",
-                              //default label style
-                              labelStyle: const TextStyle(
-                                  color: Color.fromARGB(169, 34, 116, 1),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                              //floating label style
-                              floatingLabelStyle: const TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold),
-                              fillColor:
-                                  const Color.fromARGB(255, 255, 255, 255),
-                              filled: true,
+                                  labelText: "First Name",
+                                  //default label style
+                                  labelStyle: const TextStyle(
+                                      color: Color.fromARGB(169, 34, 116, 1),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                  //floating label style
+                                  floatingLabelStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold),
+                                  fillColor:
+                                      const Color.fromARGB(255, 255, 255, 255),
+                                  filled: true,
 
-                              //border when field if focused
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  borderSide: const BorderSide(
-                                      color: Colors.orange, width: 4.0)),
+                                  //border when field if focused
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                    borderSide: const BorderSide(
+                                      color: Colors.orange, width: 4.0)
+                                  ),
 
-                              //border when ther is no input and its not foucesed
-                              enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                      color: Color.fromARGB(255, 33, 116, 1),
-                                      width: 3.0)),
-                            )),
+                                  //border when ther is no input and its not foucesed
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                      color: _isFirstNameEmpty 
+                                      ? Colors.red
+                                      :const Color.fromARGB(255, 33, 116, 1),
+                                      width: 3.0)
+                                  ),
+                                ),
+                                controller: _firstnameController,
+                              ),
 
                             const SizedBox(height: 20),
                             // LastName
                             TextField(
-                                decoration: InputDecoration(
-                              labelText: "Last Name",
-                              //default label style
-                              labelStyle: const TextStyle(
+                              decoration: InputDecoration(
+                                labelText: "Last Name",
+                                //default label style
+                                labelStyle: const TextStyle(
                                   color: Color.fromARGB(169, 34, 116, 1),
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold),
-                              //floating label style
-                              floatingLabelStyle: const TextStyle(
+                                //floating label style
+                                floatingLabelStyle: const TextStyle(
                                   color: Color.fromARGB(255, 0, 0, 0),
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold),
-                              fillColor:
+                                fillColor:
                                   const Color.fromARGB(255, 255, 255, 255),
-                              filled: true,
+                                filled: true,
 
-                              //border when field if focused
-                              focusedBorder: OutlineInputBorder(
+                                //border when field if focused
+                                focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
                                   borderSide: const BorderSide(
-                                      color: Colors.orange, width: 4.0)),
+                                    color: Colors.orange, width: 4.0)),
 
-                              //border when ther is no input and its not foucesed
-                              enabledBorder: OutlineInputBorder(
+                                //border when ther is no input and its not foucesed
+                                enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                      color: Color.fromARGB(255, 33, 116, 1),
-                                      width: 3.0)),
-                            )),
+                                  borderSide:  BorderSide(
+                                    color: _isLastNameEmpty 
+                                      ? Colors.red
+                                      :const Color.fromARGB(255, 33, 116, 1),
+                                    width: 3.0)),
+                              ),
+                              controller: _lastnameController,
+                            ),
                             const SizedBox(height: 20),
                             // Email
                             TextField(
@@ -238,10 +295,15 @@ class _SignupwidgetState extends State<Signupwidget> {
                               //border when ther is no input and its not foucesed
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                      color: Color.fromARGB(255, 33, 116, 1),
+                                  borderSide:  BorderSide(
+                                      color: _isEmailEmpty 
+                                      ? Colors.red
+                                      :const Color.fromARGB(255, 33, 116, 1),
                                       width: 3.0)),
-                            )),
+                            ),
+                            controller: _emailController,
+                            ),
+
                             const SizedBox(height: 10),
 
                             //Password
@@ -270,8 +332,10 @@ class _SignupwidgetState extends State<Signupwidget> {
                                 //border when ther is no input and its not foucesed
                                 enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                        color: Color.fromARGB(255, 33, 116, 1),
+                                    borderSide:  BorderSide(
+                                        color: _isPasswordEmpty 
+                                      ? Colors.red
+                                      :const Color.fromARGB(255, 33, 116, 1),
                                         width: 3.0)),
 
                                 suffixIcon: IconButton(
@@ -283,6 +347,7 @@ class _SignupwidgetState extends State<Signupwidget> {
                                   ),
                                 ),
                               ),
+                              controller: _passwordController,
                             ),
 
                             const SizedBox(height: 20),
@@ -314,8 +379,10 @@ class _SignupwidgetState extends State<Signupwidget> {
                                 //border when ther is no input and its not foucesed
                                 enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                        color: Color.fromARGB(255, 33, 116, 1),
+                                    borderSide:  BorderSide(
+                                        color: _isConPasswordEmpty 
+                                      ? Colors.red
+                                      :const Color.fromARGB(255, 33, 116, 1),
                                         width: 3.0)),
 
                                 suffixIcon: IconButton(
@@ -327,12 +394,26 @@ class _SignupwidgetState extends State<Signupwidget> {
                                   ),
                                 ),
                               ),
+                              controller: _conPasswordController,
+                            ),                            
+
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: _errormessage != null
+                                ? Text(
+                                  _errormessage!,
+                                  style: const TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
+                                )
+                                : const SizedBox.shrink(),
                             ),
 
                             const SizedBox(height: 20),
 
                             ElevatedButton(
-                                onPressed: () {},
+                                onPressed: _signup,
                                 style: ElevatedButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 40, vertical: 10),
@@ -347,14 +428,17 @@ class _SignupwidgetState extends State<Signupwidget> {
                                       fontSize: 18,
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold),
-                                )),
+                                )
+                              ),
 
                             const SizedBox(height: 20),
 
                             Align(
                               alignment: Alignment.centerLeft,
                               child: TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.pushReplacementNamed(context, '/login');
+                                },
                                 child: Text(
                                   "Already have an account? Log in",
                                   style: TextStyle(

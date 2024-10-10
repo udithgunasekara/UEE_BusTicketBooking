@@ -6,6 +6,8 @@ import 'package:swiftbus/BusSearch/screen/paymentPage/show_bus_details_screen.da
 import 'package:swiftbus/authentication/loginPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:swiftbus/authentication/signupPage.dart';
+import 'package:swiftbus/busRegistration/busRegistrationPage.dart';
+import 'package:swiftbus/busRegistration/conducterHome.dart';
 import 'package:swiftbus/common/Home.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -32,10 +34,12 @@ class MyApp extends StatelessWidget {
       initialRoute: '/home',
       routes: {
         '/home': (context) => const Home(),
-        '/login': (context) => const LoginPage(),
-        '/signup': (context) => const Signuppage(),
+        '/login' : (context) => const LoginPage(),
+        '/signup' : (context) => const Signuppage(),
+        '/busregistration' : (context) => const Busregistration(),
+        '/chome': (context) => const Conducterhome(),
         '/bustest': (context) => SearchBusesScreen(),
-      },
+      }
     );
   }
 }
