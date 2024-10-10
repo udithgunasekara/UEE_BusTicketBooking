@@ -11,6 +11,7 @@ class ShowBusDetailsScreen extends StatefulWidget {
   final String toTime;
   final String fromTime;
   final String docId;
+  final List<int> seatNumbers;
 
   //bus number
   //seat numbers
@@ -24,6 +25,7 @@ class ShowBusDetailsScreen extends StatefulWidget {
     required this.toTime,
     required this.fromTime,
     required this.docId,
+    required this.seatNumbers,
   }) {
     print('Here the bus id: $docId');
   }
@@ -56,11 +58,11 @@ class _ShowBusDetailsScreenState extends State<ShowBusDetailsScreen> {
 
   String get busNumber => busDetails?['busNo'] ?? 'Unknown';
   //props
-  final List<int> seatNumbers = [1, 2, 3, 4];
+  //final List<int> seatNumbers = seatNumbers;
 
   final double totalPayment = 150.0;
   // calculation
-  String get fullPrice => busDetails?['price'] ?? 'Unknown price';
+  String get fullPrice => busDetails?['price'] ?? 'Unknown Price';
   //props
   final String userName = 'John Doe';
   // google auth
@@ -87,12 +89,12 @@ class _ShowBusDetailsScreenState extends State<ShowBusDetailsScreen> {
                 from: widget.from,
                 toTime: widget.toTime,
                 fromTime: widget.fromTime,
-                seatNumbers: seatNumbers,
+                seatNumbers: widget.seatNumbers,
               ),
               const SizedBox(height: 24),
               PaymentSummary(
                   price: fullPrice,
-                  seatNumbers: seatNumbers,
+                  seatNumbers: widget.seatNumbers,
                   to: widget.to,
                   from: widget.from,
                   busNo: busNumber),

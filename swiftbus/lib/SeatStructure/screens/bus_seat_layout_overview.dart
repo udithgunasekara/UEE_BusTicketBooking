@@ -107,8 +107,13 @@ class _BusSeatLayoutOverviewState extends State<BusSeatLayoutOverview> {
       context,
       MaterialPageRoute(
         builder: (context) => SeatSelectionScreen(
-          disabledSeats: disabledSeats,
-          busModel: widget.busModel,
+          busModel: busModels[0],
+          disabledSeats: {1, 15, 6},
+          to: 'to', // Example data
+          from: 'from', // Example data
+          toTime: 'toTime', // Example data
+          fromTime: 'fromTime', // Example data
+          docId: 'docId', // Example data
         ),
       ),
     );
