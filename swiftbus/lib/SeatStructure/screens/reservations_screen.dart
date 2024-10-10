@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../models/bus_model.dart';
-import '../../widgets/seat_layout.dart';
-import '../../widgets/legend.dart';
-import '../../components/trip_info.dart';
+import '../models/bus_model.dart';
+import '../widgets/seat_layout.dart';
+import '../widgets/legend.dart';
+import '../widgets/trip_info.dart';
 
 class ReservationsScreen extends StatelessWidget {
   final String from;

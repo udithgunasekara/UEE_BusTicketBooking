@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../models/bus_model.dart';
-import '../../widgets/seat_layout.dart';
-import '../../widgets/legend.dart';
+import '../models/bus_model.dart';
+import '../widgets/seat_layout.dart';
+import '../widgets/legend.dart';
 
 class DisableSeatsScreen extends StatefulWidget {
   final Set<int> initialDisabledSeats;

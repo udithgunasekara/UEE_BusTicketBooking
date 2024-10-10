@@ -1,3 +1,5 @@
+// widgets/seat_layout.dart
+
 import 'package:flutter/material.dart';
 import 'legend.dart';
 
