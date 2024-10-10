@@ -24,10 +24,8 @@ class _BusregistrationState extends State<Busregistration> {
         statusBarColor: Colors.orange,
         statusBarIconBrightness: Brightness.light));
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.orange,
-      ),
-      body: SingleChildScrollView(
+      body:SafeArea(
+        child: SingleChildScrollView(
           child: Container(
         color: Colors.white,
         width: MediaQuery.of(context).size.width,
@@ -38,7 +36,7 @@ class _BusregistrationState extends State<Busregistration> {
               children: [
                 //top arc
                 Container(
-                  height: 50,
+                  height: 80,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: Colors.orange,
@@ -65,7 +63,7 @@ class _BusregistrationState extends State<Busregistration> {
                 ),
 
                 SizedBox(
-                  height: 600,
+                  height: MediaQuery.of(context).size.height,
                   child: PageView(
                     controller: _pageController,
                     physics: const NeverScrollableScrollPhysics(),
@@ -108,6 +106,7 @@ class _BusregistrationState extends State<Busregistration> {
           ],
         ),
       )),
+      ) 
     );
   }
 }

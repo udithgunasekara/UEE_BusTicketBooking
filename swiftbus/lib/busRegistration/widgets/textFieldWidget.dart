@@ -29,14 +29,36 @@ class CustomTextFormField extends StatelessWidget {
             fontWeight: FontWeight.bold),
         fillColor: const Color.fromARGB(255, 255, 255, 255),
         filled: true,
+        //border when the input is focsed
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
-          borderSide: const BorderSide(color: Colors.orange, width: 4.0),
+          borderSide: const BorderSide(color: Colors.orange, width: 2.0),
         ),
+        //default border style
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(
-              color: Color.fromARGB(255, 33, 116, 1), width: 3.0),
+              color: Color.fromARGB(255, 33, 116, 1), width: 2.0),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(
+            color: Color.fromARGB(
+                255, 255, 38, 0), // Set custom color for the error underline
+            width: 2.0,
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(
+            color: Colors.orange, // Custom color when focused with error
+            width: 2.0,
+          ),
+        ),
+        errorStyle: const TextStyle(
+          color: Colors.red, // Custom error text color
+          fontSize: 13, // Adjust the size of the error message
+          fontWeight: FontWeight.bold, // Bold the error message if needed
         ),
       ),
       validator: validator,
