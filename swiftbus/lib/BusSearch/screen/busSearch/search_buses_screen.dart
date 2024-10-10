@@ -84,6 +84,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:swiftbus/BusSearch/service/firestore.dart';
+import 'package:swiftbus/common/NavBar.dart';
 import 'widget/search_input.dart';
 import 'widget/bus_list_item.dart';
 import 'widget/bus_time_picker.dart';
@@ -192,6 +193,7 @@ class _SearchBusesScreenState extends State<SearchBusesScreen> {
           ],
         ),
       ),
+      bottomNavigationBar: Navbar(context),
     );
   }
 }
