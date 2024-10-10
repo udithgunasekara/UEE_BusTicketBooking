@@ -1,23 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:swiftbus/BusSearch/service/firestore.dart';
 
-class PaymentSummary extends StatelessWidget {
+class PaymentSummary extends StatefulWidget {
+  final double totalPayment;
+  final String price;
+  final List<int> seatNumbers;
+  final String to;
+  final String from;
+  final String busNo;
+
+  PaymentSummary(
+      {required this.price,
+      required this.seatNumbers,
+      required this.to,
+      required this.from,
+      required this.busNo})
+      : totalPayment = (double.parse(price) * seatNumbers.length);
+
+  @override
+  State<PaymentSummary> createState() => _PaymentSummaryState();
+}
+
+class _PaymentSummaryState extends State<PaymentSummary> {
+  final FirestoreService firestoreService = FirestoreService();
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildPaymentTotal(),
-        SizedBox(height: 50),
-        Text('Add your card details', style: TextStyle(fontSize: 16)),
-        SizedBox(height: 8),
+        const SizedBox(height: 50),
+        const Text('Add your card details', style: TextStyle(fontSize: 16)),
+        const SizedBox(height: 8),
         _buildCardOption('Axis Bank', '8395', 'mastercard'),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         _buildCardOption('HDFC Bank', '6246', 'visa'),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         _buildAddNewCardButton(),
-        SizedBox(height: 50),
+        const SizedBox(height: 50),
         _buildTotalBill(),
-        SizedBox(height: 24),
+        const SizedBox(height: 24),
         _buildProcessPaymentButton(),
       ],
     );
@@ -29,7 +52,7 @@ class PaymentSummary extends StatelessWidget {
       children: [
         Text('Total Payment',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        Text('Rs 5,357.00',
+        Text(widget.totalPayment.toStringAsFixed(2),
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
       ],
     );
@@ -37,7 +60,7 @@ class PaymentSummary extends StatelessWidget {
 
   Widget _buildCardOption(String bank, String lastFour, String network) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey.shade300),
         borderRadius: BorderRadius.circular(8),
@@ -46,10 +69,10 @@ class PaymentSummary extends StatelessWidget {
         children: [
           Image.network('https://cdn-icons-png.flaticon.com/512/196/196578.png',
               width: 40, height: 25),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           Text('$bank **** **** **** $lastFour'),
-          Spacer(),
-          Icon(Icons.radio_button_off, color: Colors.grey),
+          const Spacer(),
+          const Icon(Icons.radio_button_off, color: Colors.grey),
         ],
       ),
     );
@@ -73,7 +96,7 @@ class PaymentSummary extends StatelessWidget {
   }
 
   Widget _buildTotalBill() {
-    return const Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
@@ -85,14 +108,14 @@ class PaymentSummary extends StatelessWidget {
               CrossAxisAlignment.end, // Align the text to the right
           children: [
             Text(
-              'Rs 1360.00 × 2', // The smaller text showing the breakdown
+              'Rs. ${widget.price} × ${widget.seatNumbers.length}', // The smaller text showing the breakdown
               style: TextStyle(
                   fontSize: 12, color: Colors.grey), // Smaller, lighter text
             ),
             SizedBox(
                 height: 4), // Spacing between the breakdown and total amount
             Text(
-              'Rs 5,357.00', // The total amount
+              'Rs. ${widget.totalPayment.toStringAsFixed(2)}', // The total amount
               style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold), // Larger, bold text
@@ -108,7 +131,24 @@ class PaymentSummary extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          // TODO: Implement payment processing logic
+          // Call the savePaymentDetails function when the button is pressed
+          firestoreService.savePaymentDetails(
+            seatNumbers: widget.seatNumbers,
+            busNumber:
+                widget.busNo, // Example bus number (replace with real value)
+            to: widget.to,
+            from: widget.from,
+            totalPayment: widget.totalPayment,
+          );
+
+          // Show a toast message indicating that the payment is processing
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Your payment is processing...'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+
           print('Process Payment button pressed');
         },
         style: ElevatedButton.styleFrom(

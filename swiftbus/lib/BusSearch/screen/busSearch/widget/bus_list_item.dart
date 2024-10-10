@@ -1,22 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:swiftbus/BusSearch/screen/busDisplay/bus_details_screen.dart';
 import 'package:swiftbus/common/RouteIcon.dart';
 
 class BusListItem extends StatelessWidget {
   final String busName;
-  final String type;
+  final String busType;
   final String onboardTime;
+  final String startLocation;
+  final String destination;
+  final String busNo;
+  final String docId;
   final String to;
   final String from;
-  final String busNumber; // Added for the bus number (e.g., KD 8343)
 
   const BusListItem({
     Key? key,
     required this.busName,
-    required this.type,
+    required this.busType,
     required this.onboardTime,
+    required this.startLocation,
+    required this.destination,
+    required this.busNo,
+    required this.docId,
     required this.to,
     required this.from,
-    required this.busNumber,
   }) : super(key: key);
 
   @override
@@ -39,7 +46,7 @@ class BusListItem extends StatelessWidget {
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 Text(
-                  busNumber,
+                  busNo,
                   style: TextStyle(color: Colors.grey[700], fontSize: 14),
                 ),
               ],
@@ -55,7 +62,7 @@ class BusListItem extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  type,
+                  busType,
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 12,
@@ -68,7 +75,7 @@ class BusListItem extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    to,
+                    startLocation,
                     style: TextStyle(fontSize: 15),
                   ),
                 ),
@@ -82,7 +89,7 @@ class BusListItem extends StatelessWidget {
 
                 Expanded(
                   child: Text(
-                    from,
+                    destination,
                     textAlign: TextAlign.right,
                     style: TextStyle(fontSize: 15),
                   ),
@@ -99,18 +106,27 @@ class BusListItem extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            BusDetailsScreen(docId: docId, to: to, from: from),
+                      ),
+                    );
                     // View more logic
                   },
-                  child: Text(
-                    'View More',
-                    style: TextStyle(color: Colors.white, fontSize: 14),
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF129C38),
                     padding: EdgeInsets.fromLTRB(25, 5, 25, 5),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18),
                     ),
+                  ),
+
+                  //HEre view more button to redirect to the bus details page
+                  child: const Text(
+                    'View More',
+                    style: TextStyle(color: Colors.white, fontSize: 14),
                   ),
                 ),
               ],
