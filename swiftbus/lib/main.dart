@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:swiftbus/authentication/loginPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:swiftbus/authentication/signupPage.dart';
+import 'package:swiftbus/busRegistration/busRegistrationPage.dart';
+import 'package:swiftbus/busRegistration/conducterHome.dart';
 import 'package:swiftbus/common/Home.dart';
 
 Future main() async {
@@ -22,11 +24,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         textTheme: GoogleFonts.interTextTheme(),
       ),
-      initialRoute: '/signup',
+      initialRoute: '/chome',
       routes: {
         '/home': (context) => const Home(),
         '/login' : (context) => const LoginPage(),
         '/signup' : (context) => const Signuppage(),
+        '/busregistration' : (context) => const Busregistration(),
+        '/chome': (context) => const Conducterhome(),
       }
     );
   }
