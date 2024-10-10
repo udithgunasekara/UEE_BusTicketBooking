@@ -3,6 +3,7 @@ import 'package:swiftbus/BusSearch/screen/busDisplay/widget/booking_button.dart'
 import 'package:swiftbus/BusSearch/screen/busDisplay/widget/bus_info_card.dart';
 import 'package:swiftbus/BusSearch/screen/busDisplay/widget/bus_schedule_widget.dart';
 import 'package:swiftbus/BusSearch/service/firestore.dart';
+import 'package:swiftbus/common/NavBar.dart';
 
 class BusDetailsScreen extends StatefulWidget {
   final String docId;

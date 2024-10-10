@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:swiftbus/UserSupport/Conductor/ViewUserRequest.dart';
 import 'package:swiftbus/UserSupport/Passenger/viewPreviousRequest.dart';
 import 'package:swiftbus/UserSupport/Service/DatabaseMethods.dart';
 import 'package:swiftbus/common/Home.dart';
@@ -65,7 +66,7 @@ Widget Navbar(BuildContext context) {
             ),
             const BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              label: 'Profile',
+              label: 'Bus Search',
             ),
           ],
           onTap: (int index) {
@@ -97,6 +98,13 @@ Widget Navbar(BuildContext context) {
                 break;
               case 3:
                 // Handle Profile navigation
+                // Navigate to Notification screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchBusesScreen(),
+                  ),
+                );
                 break;
             }
           },
