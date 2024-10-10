@@ -30,28 +30,74 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:swiftbus/BusSearch/service/firestore.dart';
 import 'package:swiftbus/common/RouteIcon.dart';
-// Ensure this import points to the correct file
 
-class BusScheduleWidget extends StatelessWidget {
+class BusScheduleWidget extends StatefulWidget {
+  final String docId;
+  final String from;
+  final String to;
+  final String fromTime;
+  final String toTime;
+
+  BusScheduleWidget(
+      {required this.docId,
+      required this.from,
+      required this.to,
+      required this.fromTime,
+      required this.toTime}) {
+    print('Here the the bus getter in schedule: $docId, $from, $to');
+  }
+
+  @override
+  State<BusScheduleWidget> createState() => _BusScheduleWidgetState();
+}
+
+class _BusScheduleWidgetState extends State<BusScheduleWidget> {
+  Map<String, dynamic>? busDetails;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchBusDetails();
+  }
+
+  // Function to fetch bus details using the docId
+  void _fetchBusDetails() async {
+    FirestoreService firestoreService = FirestoreService();
+    Map<String, dynamic>? details =
+        await firestoreService.getBusDetails(widget.docId);
+
+    if (details != null) {
+      setState(() {
+        busDetails = details;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Bus destination',
+            const Text('Bus destination',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
-            _buildRouteInfo('Kurunegala', 'Panadura', '7:00 AM', '10:00 AM'),
-            SizedBox(height: 16),
-            Text('Your destination',
+            // const SizedBox(height: 8),
+            _buildRouteInfo(
+                busDetails!['startLocation'],
+                busDetails!['destination'],
+                busDetails!['departureTime'],
+                '10:00 AM'),
+            // const SizedBox(height: 16),
+            const Text('Your destination',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            SizedBox(height: 8),
-            _buildRouteInfo('Malabe', 'Panadura', '9:20 AM', '10:00 AM'),
+            const SizedBox(height: 8),
+            _buildRouteInfo(
+                widget.from, widget.to, widget.toTime, widget.fromTime),
           ],
         ),
       ),
@@ -67,28 +113,30 @@ class BusScheduleWidget extends StatelessWidget {
           children: [
             Expanded(
               child: Text(from,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.w500)),
             ),
-            Expanded(
+            const Expanded(
               child: Center(child: RouteIcon(width: 100)),
             ),
             Expanded(
               child: Text(to,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.w500),
                   textAlign: TextAlign.right),
             ),
           ],
         ),
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Row(
           children: [
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Departure Time',
+                  const Text('Departure Time',
                       style: TextStyle(fontSize: 12, color: Colors.grey)),
-                  Text(departureTime, style: TextStyle(fontSize: 14)),
+                  Text(departureTime, style: const TextStyle(fontSize: 14)),
                 ],
               ),
             ),
@@ -96,9 +144,9 @@ class BusScheduleWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text('Arrival Time',
+                  const Text('Arrival Time',
                       style: TextStyle(fontSize: 12, color: Colors.grey)),
-                  Text(arrivalTime, style: TextStyle(fontSize: 14)),
+                  Text(arrivalTime, style: const TextStyle(fontSize: 14)),
                 ],
               ),
             ),
