@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../models/bus_model.dart';
 import '../widgets/seat_layout.dart';
 import '../widgets/legend.dart';
 import '../widgets/trip_info.dart';
@@ -10,6 +11,7 @@ class ReservationsScreen extends StatelessWidget {
   final String time;
   final List<int> reservedSeats;
   final List<int> disabledSeats;
+  final BusModel busModel;
 
   ReservationsScreen({
     required this.from,
@@ -18,6 +20,7 @@ class ReservationsScreen extends StatelessWidget {
     required this.time,
     required this.reservedSeats,
     required this.disabledSeats,
+    required this.busModel,
   });
 
   @override
@@ -33,12 +36,15 @@ class ReservationsScreen extends StatelessWidget {
               to: to,
               date: date,
               time: time,
-              availableSeats: 56 - disabledSeats.length - reservedSeats.length,
+              availableSeats: busModel.totalSeats -
+                  disabledSeats.length -
+                  reservedSeats.length,
             ),
             Expanded(
               child: SeatLayout(
+                seatMap: busModel.seatMap,
                 disabledSeats: Set.from(disabledSeats),
-                onSeatTap: null, // Seats are not tappable in reservation view
+                onSeatTap: null,
                 seatColor: (seatNumber) {
                   if (reservedSeats.contains(seatNumber)) {
                     return Colors.green;
@@ -83,7 +89,7 @@ class ReservationsScreen extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          SizedBox(width: 48), // Balance the layout
+          SizedBox(width: 48),
         ],
       ),
     );
