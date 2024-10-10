@@ -44,6 +44,7 @@ class AuthService{
           'email' : email,
           'uid' : user.uid,
           'isPassenger' : isPassenger,
+          'busid': null
         });
       }
       return null;

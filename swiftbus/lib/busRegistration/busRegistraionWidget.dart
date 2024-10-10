@@ -266,7 +266,7 @@ class _BusregistraionwidgetState extends State<Busregistraionwidget> {
                 CustomDatePickerField(
                   labelText: 'Departure Date *',
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null) {
                       return 'Date is required';
                     }
                     return null;
