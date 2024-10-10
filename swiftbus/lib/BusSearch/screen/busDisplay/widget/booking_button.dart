@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:swiftbus/BusSearch/screen/paymentPage/show_bus_details_screen.dart';
+import 'package:swiftbus/SeatStructure/models/bus_model.dart';
 import 'package:swiftbus/SeatStructure/screens/seat_selection_screen.dart';
 
 class BookingButton extends StatelessWidget {
@@ -60,15 +61,28 @@ class BookingButton extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        // SeatSelectionScreen(disabledSeats: {1, 2, 3})),
-                        ShowBusDetailsScreen(
-                          to: to,
-                          from: from,
-                          toTime: toTime,
-                          fromTime: fromTime,
-                          docId: docId,
-                        )),
+                  builder: (context) =>
+
+                      //TODO: get desabledSeats, busModel from bus
+
+                      SeatSelectionScreen(
+                    busModel: busModels[0],
+                    disabledSeats: {1, 15, 6},
+                    to: to, // Example data
+                    from: from, // Example data
+                    toTime: toTime, // Example data
+                    fromTime: fromTime, // Example data
+                    docId: docId, // Example data
+                  ),
+                ),
+
+                // ShowBusDetailsScreen(
+                //   to: to,
+                //   from: from,
+                //   toTime: toTime,
+                //   fromTime: fromTime,
+                //   docId: docId,
+                // )),
               );
             },
             style: ElevatedButton.styleFrom(
