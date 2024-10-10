@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../models/bus_model.dart';
+import '../models/bus_model.dart';
 import 'bus_seat_layout_overview.dart';
 
 class BusModelSelectionScreen extends StatelessWidget {

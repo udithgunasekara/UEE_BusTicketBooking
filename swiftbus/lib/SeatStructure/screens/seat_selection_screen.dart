@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../models/bus_model.dart';
-import '../../widgets/seat_layout.dart';
-import '../../widgets/legend.dart';
-import '../reservations/reservations_screen.dart';
-import '../payment_screen.dart'; // Import the PaymentScreen
+import '../models/bus_model.dart';
+import '../widgets/seat_layout.dart';
+import '../widgets/legend.dart';
+import 'reservations_screen.dart';
+import '../widgets/trip_info.dart';
 
 class SeatSelectionScreen extends StatefulWidget {
   final Set<int> disabledSeats;
@@ -29,6 +29,14 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _buildAppBar(),
+            TripInfo(
+              from: 'Panadura',
+              to: 'Kandy',
+              date: '08 Sep 2024',
+              time: '03:30 AM',
+              availableSeats:
+                  widget.busModel.totalSeats - widget.disabledSeats.length,
+            ),
             Expanded(
               child: SeatLayout(
                 seatMap: widget.busModel.seatMap,
@@ -123,8 +131,14 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
   void _completeBooking() {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => PaymentScreen(
-          bookedSeats: selectedSeats.toList(), // Pass the booked seats here
+        builder: (context) => ReservationsScreen(
+          from: 'Panadura',
+          to: 'Kandy',
+          date: '08 Sep 2024',
+          time: '03:30 AM',
+          reservedSeats: selectedSeats.toList(),
+          disabledSeats: widget.disabledSeats.toList(),
+          busModel: widget.busModel,
         ),
       ),
     );
