@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:swiftbus/UserSupport/Service/DatabaseMethods.dart';
 
 class Popup extends StatelessWidget {
   const Popup({super.key});
+
+  final String userId = 'C001';
+  final String busId = "B001";
 
   // Function for "Request Changes" pop-up
   void _ReqestChanges(BuildContext context) {
@@ -31,8 +35,9 @@ class Popup extends StatelessWidget {
               ),
               child: const Text('Confirm', style: TextStyle(color: Colors.black),),
               onPressed: () {
+                String seatNumber = seatController.text;
+                DatabaseMethods().createRequest(userId, 'Request Changes', 'Medium', seatNumber, busId);
                 Navigator.of(context).pop();
-                // Do something with the seat number
               },
             ),
           ),
@@ -49,6 +54,7 @@ class Popup extends StatelessWidget {
   bool highPriority = true;
   bool mediumPriority = false;
   bool lowPriority = false;
+  String priority = 'High';
 
   showDialog(
     context: context,
@@ -88,8 +94,13 @@ class Popup extends StatelessWidget {
                             onChanged: (bool newValue) {
                               setState(() {
                                 highPriority = newValue;
-                                mediumPriority = !newValue;
-                                lowPriority = !newValue;
+                                mediumPriority = false;
+                                lowPriority = false;
+                                if(newValue){
+                                  priority = 'High';
+                                }else{
+                                  priority = 'low';
+                                }
                               });
                             },
                             activeColor: Colors.green,
@@ -105,9 +116,14 @@ class Popup extends StatelessWidget {
                             activeColor: Colors.green,
                             onChanged: (bool newValue) {
                               setState(() {
+                                highPriority = false;
                                 mediumPriority = newValue;
-                                highPriority = !newValue;
-                                lowPriority = !newValue;
+                                lowPriority = false;
+                                if(newValue){
+                                  priority = 'Medium';
+                                }else{
+                                  priority = 'low';
+                                }
                               });
                             },
                           ),
@@ -122,9 +138,10 @@ class Popup extends StatelessWidget {
                             activeColor: Colors.green,
                             onChanged: (bool newValue) {
                               setState(() {
+                                highPriority = false;
+                                mediumPriority = false;
                                 lowPriority = newValue;
-                                highPriority = !newValue;
-                                mediumPriority = !newValue;
+                                priority = 'Low';
                               });
                             },
                           ),
@@ -143,8 +160,9 @@ class Popup extends StatelessWidget {
                   ),
                   child: const Text('Confirm', style: TextStyle(color: Colors.black)),
                   onPressed: () {
+                    String seatNumber = seatController.text;
+                    DatabaseMethods().createRequest(userId, 'Request Medical orSocial Concern', priority, seatNumber, busId);
                     Navigator.of(context).pop();
-                    // Do something with the seat number
                   },
                 ),
               ),
@@ -205,8 +223,12 @@ class Popup extends StatelessWidget {
                     ),
                     child: const Text('Confirm', style: TextStyle(color: Colors.black),),
                     onPressed: () {
+                      String message = lostItemController.text;
+                      if(askHelpFromPassengers){
+                        DatabaseMethods().createNotification(userId, 'Passenger ask for help to find his lost item. Description: "$message"', busId);
+                      }
+                      DatabaseMethods().createRequest(userId, 'Passenger ask for help to find his lost item. Description: "$message"', 'High', '0', busId);
                       Navigator.of(context).pop();
-                      // Do something with the seat number
                     },
                   ),
                 ),

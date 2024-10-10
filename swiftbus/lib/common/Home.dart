@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:popover/popover.dart';
+import 'package:swiftbus/UserSupport/Conductor/ViewUserRequest.dart';
 import 'package:swiftbus/common/NavBar.dart';
 import 'package:swiftbus/UserSupport/Passenger/UserSupport.dart';
+import 'package:swiftbus/common/ScanQr.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -41,20 +43,31 @@ class _HomeState extends State<Home> {
       floatingActionButton: Builder(
         builder: (context) => FloatingActionButton(
           onPressed: () {
-            showPopover(
-                  context: context,
-                  bodyBuilder: (context) => Popup(),
-                  width: 250, 
-                  height: 166,
-                  backgroundColor: Colors.transparent,
-                  direction: PopoverDirection.top
+            if(busId == null){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SacnQr(),
+                  ),
                 );
+            }else{
+              showPopover(
+                context: context,
+                bodyBuilder: (context) => Popup(),
+                width: 250, 
+                height: 166,
+                backgroundColor: Colors.transparent,
+                direction: PopoverDirection.top
+              );
+            }
           },
           tooltip: 'pop up box',
+          backgroundColor: Colors.orange,
+          shape: const CircleBorder(),
           child: const Icon(Icons.support_agent),
         ),
       ),
-      bottomNavigationBar: Navbar(),
+      bottomNavigationBar: Navbar(context),
     );
   }
 }
