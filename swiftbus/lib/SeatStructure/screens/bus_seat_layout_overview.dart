@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'disable_seats_screen.dart';
-import 'seat_selection_screen.dart';
+import '../models/bus_model.dart';
 import '../widgets/seat_layout.dart';
 import '../widgets/legend.dart';
+import 'disable_seats_screen.dart';
+import 'seat_selection_screen.dart';
 
 class BusSeatLayoutOverview extends StatefulWidget {
+  final BusModel busModel;
+
+  BusSeatLayoutOverview({required this.busModel});
+
   @override
   _BusSeatLayoutOverviewState createState() => _BusSeatLayoutOverviewState();
 }
@@ -16,14 +21,8 @@ class _BusSeatLayoutOverviewState extends State<BusSeatLayoutOverview> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bus Seat Overview'),
+        title: Text(widget.busModel.name),
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
       ),
       body: SafeArea(
         child: Column(
@@ -31,6 +30,7 @@ class _BusSeatLayoutOverviewState extends State<BusSeatLayoutOverview> {
           children: [
             Expanded(
               child: SeatLayout(
+                seatMap: widget.busModel.seatMap,
                 disabledSeats: disabledSeats,
                 onSeatTap: null,
                 seatColor: (seatNumber) => disabledSeats.contains(seatNumber)
@@ -89,8 +89,11 @@ class _BusSeatLayoutOverviewState extends State<BusSeatLayoutOverview> {
     final result = await Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) =>
-              DisableSeatsScreen(initialDisabledSeats: disabledSeats)),
+        builder: (context) => DisableSeatsScreen(
+          initialDisabledSeats: disabledSeats,
+          busModel: widget.busModel,
+        ),
+      ),
     );
     if (result != null) {
       setState(() {
@@ -103,8 +106,11 @@ class _BusSeatLayoutOverviewState extends State<BusSeatLayoutOverview> {
     Navigator.push(
       context,
       MaterialPageRoute(
-          builder: (context) =>
-              SeatSelectionScreen(disabledSeats: disabledSeats)),
+        builder: (context) => SeatSelectionScreen(
+          disabledSeats: disabledSeats,
+          busModel: widget.busModel,
+        ),
+      ),
     );
   }
 }
