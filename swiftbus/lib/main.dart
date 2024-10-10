@@ -8,6 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:swiftbus/authentication/signupPage.dart';
 import 'package:swiftbus/common/Home.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -21,16 +23,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          textTheme: GoogleFonts.interTextTheme(),
-        ),
-        initialRoute: '/bustest',
-        routes: {
-          '/home': (context) => const Home(),
-          '/login': (context) => const LoginPage(),
-          '/signup': (context) => const Signuppage(),
-          '/bustest': (context) => SearchBusesScreen(),
-        });
+      debugShowCheckedModeBanner: false,
+      navigatorKey: navigatorKey, // Attach the global key to the MaterialApp
+      home: const Home(), // Set the initial screen
+      theme: ThemeData(
+        textTheme: GoogleFonts.interTextTheme(),
+      ),
+      initialRoute: '/home',
+      routes: {
+        '/home': (context) => const Home(),
+        '/login': (context) => const LoginPage(),
+        '/signup': (context) => const Signuppage(),
+        '/bustest': (context) => SearchBusesScreen(),
+      },
+    );
   }
 }

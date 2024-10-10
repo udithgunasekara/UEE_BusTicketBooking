@@ -10,7 +10,7 @@ class ViewUserRequest extends StatefulWidget {
   State<ViewUserRequest> createState() => _ViewUserRequestState();
 }
 
-String busId = 'B001';
+String? busId;
 
 class _ViewUserRequestState extends State<ViewUserRequest> {
   @override

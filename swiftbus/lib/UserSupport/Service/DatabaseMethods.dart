@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:swiftbus/UserSupport/Service/Donepopupbox.dart';
+import 'package:swiftbus/UserSupport/Service/Errorpopupbox.dart';
 
 class DatabaseMethods {
   Future<void> createRequest(String userId, String message, String priority, String seatNumber, String busId) async {
@@ -12,12 +14,14 @@ class DatabaseMethods {
       });
       
       print("UserSupport created successfully.");
+      showPopup();
     } catch (e) {
       print("Error creating UserSupport: $e");
+      showErrorPopup();
     }
   }
 
-  Stream<QuerySnapshot> getaRequest(String busid) {
+  Stream<QuerySnapshot> getaRequest(String? busid) {
     return FirebaseFirestore.instance
         .collection("UserSupport")
         .where('busid', isEqualTo: busid)
