@@ -1,86 +1,86 @@
-// import 'package:flutter/material.dart';
-// import 'package:swiftbus/BusSearch/service/firestore.dart';
-// import 'widget/search_input.dart';
-// import 'widget/bus_list_item.dart';
-// import 'widget/bus_time_picker.dart';
+// // import 'package:flutter/material.dart';
+// // import 'package:swiftbus/BusSearch/service/firestore.dart';
+// // import 'widget/search_input.dart';
+// // import 'widget/bus_list_item.dart';
+// // import 'widget/bus_time_picker.dart';
 
-// class SearchBusesScreen extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Padding(
-//         padding: const EdgeInsets.fromLTRB(30, 70, 30, 20),
-//         child: Column(
-//           children: [
-//             //input fields
-//             const SearchInput(hintText: 'Malabe', icon: Icons.circle_outlined),
-//             const SearchInput(
-//                 hintText: 'Panadura', icon: Icons.location_on_outlined),
+// // class SearchBusesScreen extends StatelessWidget {
+// //   @override
+// //   Widget build(BuildContext context) {
+// //     return Scaffold(
+// //       body: Padding(
+// //         padding: const EdgeInsets.fromLTRB(30, 70, 30, 20),
+// //         child: Column(
+// //           children: [
+// //             //input fields
+// //             const SearchInput(hintText: 'Malabe', icon: Icons.circle_outlined),
+// //             const SearchInput(
+// //                 hintText: 'Panadura', icon: Icons.location_on_outlined),
 
-//             //set timer
-//             BusTimePicker(),
-//             SizedBox(height: 15),
+// //             //set timer
+// //             BusTimePicker(),
+// //             SizedBox(height: 15),
 
-//             //search button
-//             ElevatedButton(
-//               onPressed: () async {
-//                 // Get the entered values for from, to, and time
-//                 String from =
-//                     'waliweriya'; // Replace with actual user input value
-//                 String to = 'pasyala'; // Replace with actual user input value
-//                 String time = '12:45'; // Replace with actual user input value
+// //             //search button
+// //             ElevatedButton(
+// //               onPressed: () async {
+// //                 // Get the entered values for from, to, and time
+// //                 String from =
+// //                     'waliweriya'; // Replace with actual user input value
+// //                 String to = 'pasyala'; // Replace with actual user input value
+// //                 String time = '12:45'; // Replace with actual user input value
 
-//                 // Call the Firestore search function
-//                 FirestoreService firestoreService = FirestoreService();
-//                 await firestoreService.searchBuses(from, to, time);
-//               },
-//               style: ElevatedButton.styleFrom(
-//                 backgroundColor: Color(0xFF129C38),
-//                 minimumSize: Size(double.infinity, 40), // Set the width to full
-//               ),
-//               child: const Text(
-//                 'Search Buses',
-//                 style: TextStyle(
-//                     color: Colors.white,
-//                     fontSize: 17,
-//                     fontWeight: FontWeight.w500),
-//               ),
-//             ),
-//             const SizedBox(
-//               height: 10,
-//             ),
-//             const Divider(
-//               thickness: 5,
-//             ),
-//             Expanded(
-//               child: ListView(
-//                 children: const [
-//                   BusListItem(
-//                     busName: 'D S Gunasena',
-//                     busType: 'Semi Luxury',
-//                     onboardTime: '7:00 AM',
-//                     startLocation: 'Kurunegala',
-//                     destination: 'Panadura',
-//                     busNo: 'KD 8343',
-//                   ),
-//                   BusListItem(
-//                     busName: 'D S Gunasena',
-//                     busType: 'Semi Luxury',
-//                     onboardTime: '7:00 AM',
-//                     startLocation: 'Kurunegala',
-//                     destination: 'Panadura',
-//                     busNo: 'KD 8343',
-//                   ),
-//                   // More buses
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+// //                 // Call the Firestore search function
+// //                 FirestoreService firestoreService = FirestoreService();
+// //                 await firestoreService.searchBuses(from, to, time);
+// //               },
+// //               style: ElevatedButton.styleFrom(
+// //                 backgroundColor: Color(0xFF129C38),
+// //                 minimumSize: Size(double.infinity, 40), // Set the width to full
+// //               ),
+// //               child: const Text(
+// //                 'Search Buses',
+// //                 style: TextStyle(
+// //                     color: Colors.white,
+// //                     fontSize: 17,
+// //                     fontWeight: FontWeight.w500),
+// //               ),
+// //             ),
+// //             const SizedBox(
+// //               height: 10,
+// //             ),
+// //             const Divider(
+// //               thickness: 5,
+// //             ),
+// //             Expanded(
+// //               child: ListView(
+// //                 children: const [
+// //                   BusListItem(
+// //                     busName: 'D S Gunasena',
+// //                     busType: 'Semi Luxury',
+// //                     onboardTime: '7:00 AM',
+// //                     startLocation: 'Kurunegala',
+// //                     destination: 'Panadura',
+// //                     busNo: 'KD 8343',
+// //                   ),
+// //                   BusListItem(
+// //                     busName: 'D S Gunasena',
+// //                     busType: 'Semi Luxury',
+// //                     onboardTime: '7:00 AM',
+// //                     startLocation: 'Kurunegala',
+// //                     destination: 'Panadura',
+// //                     busNo: 'KD 8343',
+// //                   ),
+// //                   // More buses
+// //                 ],
+// //               ),
+// //             ),
+// //           ],
+// //         ),
+// //       ),
+// //     );
+// //   }
+// // }
 
 import 'package:flutter/material.dart';
 import 'package:swiftbus/BusSearch/service/firestore.dart';
@@ -99,6 +99,32 @@ class _SearchBusesScreenState extends State<SearchBusesScreen> {
   List<Map<String, dynamic>> busList = [];
   String valFrom = '';
   String valTo = '';
+
+  @override
+  void initState() {
+    super.initState();
+    loadBusListItems();
+  }
+
+  Future<void> loadBusListItems() async {
+    try {
+      String from = 'q'; // Replace with actual user input value
+      String to = 'p'; // Replace with actual user input value
+      String time = '12:45'; // Replace with actual user input value
+
+      // Call the Firestore search function
+      FirestoreService firestoreService = FirestoreService();
+      List<Map<String, dynamic>> results =
+          await firestoreService.searchBuses(from, to, time);
+
+      // Update the state with the search results
+      setState(() {
+        busList = results;
+      });
+    } catch (e) {
+      print('Error loading initial bus list: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -192,9 +218,6 @@ class _SearchBusesScreenState extends State<SearchBusesScreen> {
             ),
             const SizedBox(
               height: 10,
-            ),
-            const Divider(
-              thickness: 5,
             ),
 
             // Bus list section
