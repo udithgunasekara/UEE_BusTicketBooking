@@ -90,7 +90,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100,
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFD6905),
         elevation: 0,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -134,12 +134,12 @@ class _HomeState extends State<Home> {
             }
           },
           tooltip: 'pop up box',
-          backgroundColor: Colors.orange,
+          backgroundColor: Color(0xFFFD6905),
           shape: const CircleBorder(),
           child: const Icon(Icons.support_agent),
         ),
       ),
-      bottomNavigationBar: const Navbar(),
+      bottomNavigationBar: const Navbar(selectedIndex: 0,),
     );
   }
 }

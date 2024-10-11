@@ -73,7 +73,7 @@ class _InboxState extends State<Inbox> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100,
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFD6905),
         elevation: 0,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -170,7 +170,7 @@ class _InboxState extends State<Inbox> {
                 );
               },
             ),
-      bottomNavigationBar: const Navbar(),
+      bottomNavigationBar: const Navbar(selectedIndex: 2,),
     );
   }
 }

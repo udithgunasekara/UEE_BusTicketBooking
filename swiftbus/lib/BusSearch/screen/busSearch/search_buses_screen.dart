@@ -193,7 +193,7 @@ class _SearchBusesScreenState extends State<SearchBusesScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: const Navbar(),
+      bottomNavigationBar: const Navbar(selectedIndex: 1,),
     );
   }
 }

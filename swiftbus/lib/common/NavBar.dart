@@ -8,8 +8,11 @@ import 'package:swiftbus/UserSupport/Passenger/viewPreviousRequest.dart';
 import 'package:swiftbus/common/Home.dart';
 import 'package:swiftbus/common/inbox.dart';
 
+// File: lib/widgets/navbar.dart
 class Navbar extends StatefulWidget {
-  const Navbar({Key? key}) : super(key: key);
+  final int selectedIndex;  // Pass the selectedIndex from each screen
+
+  const Navbar({Key? key, required this.selectedIndex}) : super(key: key);
 
   @override
   _NavbarState createState() => _NavbarState();
@@ -36,11 +39,9 @@ class _NavbarState extends State<Navbar> {
       });
       _fetchBusId();
     } else {
-      // Handle the case when userID is not found
       setState(() {
         isLoading = false;
       });
-      // Optionally, navigate to a login screen or handle unauthenticated state
     }
   }
 
@@ -73,81 +74,43 @@ class _NavbarState extends State<Navbar> {
 
     return Container(
       decoration: const BoxDecoration(
-        color: Colors.green,
+        color: Color(0xFF129C38),
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20.0),
           topRight: Radius.circular(20.0),
         ),
       ),
-      child: StreamBuilder<QuerySnapshot>(
-        stream: (busId != null && userId != null)
-            ? DatabaseMethods().getaNotification(busId!, userId!)
-            : null,
-        builder: (context, snapshot) {
-          bool hasUnread = false;
-
-          if (snapshot.hasData && snapshot.data != null) {
-            hasUnread = snapshot.data!.docs.any((doc) => doc['isread'] == false);
-          }
-
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return _buildBottomNavigationBar(context, hasUnread);
-          }
-
-          if (snapshot.hasError) {
-            return const Text("Error loading notifications");
-          }
-
-          return _buildBottomNavigationBar(context, hasUnread);
-        },
-      ),
+      child: _buildBottomNavigationBar(context),
     );
   }
 
-  BottomNavigationBar _buildBottomNavigationBar(BuildContext context, bool hasUnread) {
+  BottomNavigationBar _buildBottomNavigationBar(BuildContext context) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       backgroundColor: Colors.transparent,
       elevation: 0,
-      items: [
-        const BottomNavigationBarItem(
+      selectedItemColor: Color(0xFFFD6905),
+      unselectedItemColor: Colors.black,
+      currentIndex: widget.selectedIndex,  // Use the passed selectedIndex
+      items: const [
+        BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: 'Home',
         ),
-        const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: Icon(Icons.search),
           label: 'Bus Search',
         ),
         BottomNavigationBarItem(
-          icon: Stack(
-            children: [
-              const Icon(Icons.notifications),
-              if (hasUnread)
-                Positioned(
-                  right: 0,
-                  top: 0,
-                  child: Container(
-                    padding: const EdgeInsets.all(2),
-                    decoration: const BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
-                    ),
-                    constraints: const BoxConstraints(
-                      minWidth: 9,
-                      minHeight: 9,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-          label: 'Notification',
+          icon: Icon(Icons.notifications),
+          label: 'Notifications',
         ),
-        const BottomNavigationBarItem(
+        BottomNavigationBarItem(
           icon: Icon(Icons.support_agent),
           label: 'Requests',
         ),
       ],
-      onTap: (int index) {
+      onTap: (index) {
         _handleNavigation(context, index);
       },
     );
@@ -156,13 +119,13 @@ class _NavbarState extends State<Navbar> {
   void _handleNavigation(BuildContext context, int index) {
     switch (index) {
       case 0:
-        Navigator.of(context).pushAndRemoveUntil(
+        Navigator.pushReplacement(
+          context,
           MaterialPageRoute(builder: (context) => const Home()),
-          (Route<dynamic> route) => false,
         );
         break;
       case 1:
-      Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => SearchBusesScreen(),
@@ -170,7 +133,7 @@ class _NavbarState extends State<Navbar> {
         );
         break;
       case 2:
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => const Inbox(),
@@ -178,7 +141,7 @@ class _NavbarState extends State<Navbar> {
         );
         break;
       case 3:
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => const ViewPreviousRequests(),

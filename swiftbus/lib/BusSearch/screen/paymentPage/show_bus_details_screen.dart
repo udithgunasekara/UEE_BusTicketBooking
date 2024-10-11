@@ -103,7 +103,7 @@ class _ShowBusDetailsScreenState extends State<ShowBusDetailsScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: const Navbar(),
+      bottomNavigationBar: const Navbar(selectedIndex: 1,),
     );
   }
 }

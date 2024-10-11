@@ -21,7 +21,7 @@ class OnboardingPage extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Colors.green, Colors.orange],
+            colors: [Color(0xFF129C38), Color(0xFFFD6905)],
           ),
         ),
         child: FutureBuilder<bool>(
