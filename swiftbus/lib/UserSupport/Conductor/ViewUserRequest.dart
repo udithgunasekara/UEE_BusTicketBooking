@@ -74,7 +74,7 @@ class _ViewUserRequestState extends State<ViewUserRequest> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100,
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFD6905),
         elevation: 0,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -173,7 +173,7 @@ class _ViewUserRequestState extends State<ViewUserRequest> {
           );
         },
       ),
-      bottomNavigationBar: Navbar(context),
+      bottomNavigationBar: const Navbar(selectedIndex: 3,),
     );
   }
 }

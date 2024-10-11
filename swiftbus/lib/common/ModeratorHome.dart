@@ -88,7 +88,7 @@ class _ConductorHomeState extends State<ConductorHome> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100,
-        backgroundColor: Colors.orange,
+        backgroundColor: Color(0xFFFD6905),
         elevation: 0,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -111,7 +111,7 @@ class _ConductorHomeState extends State<ConductorHome> {
         ),
       ),
       body: Busdetailswidget(userId: userId),
-      bottomNavigationBar: Navbar(context),
+      bottomNavigationBar: const Navbar(selectedIndex: 0,),
     );
   }
 }
