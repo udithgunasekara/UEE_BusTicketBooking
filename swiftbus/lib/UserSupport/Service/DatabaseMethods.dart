@@ -42,8 +42,10 @@ class DatabaseMethods {
       snapshotStream.listen((QuerySnapshot snapshot) async {
         if (snapshot.docs.isNotEmpty) {
           for (var doc in snapshot.docs) {
-            String userId = doc["uid"];
-            await createNotificatio(senderid, 'Passenger ask for help to find his lost item. Description: "$message"', busId, userId);
+            String userId = doc["userId"];
+            if(senderid != userId){
+              await createNotificatio(senderid, 'Passenger ask for help to find his lost item. Description: "$message"', busId, userId);
+            }
           }
         } else {
           print("No users found for the bus with busId: $busId");
@@ -92,7 +94,7 @@ class DatabaseMethods {
       snapshotStream.listen((QuerySnapshot snapshot) async {
         if (snapshot.docs.isNotEmpty) {
           for (var doc in snapshot.docs) {
-            String userId = doc["uid"];
+            String userId = doc["userId"];
             await setBusNo(userId, busId);
           }
         } else {
@@ -108,7 +110,7 @@ class DatabaseMethods {
   Stream<QuerySnapshot> getUserId(String busId) {
     return FirebaseFirestore.instance
         .collection("bookedUsers")
-        .where('busid', isEqualTo: busId)
+        .where('busNumber', isEqualTo: busId)
         .snapshots();
   }
 
