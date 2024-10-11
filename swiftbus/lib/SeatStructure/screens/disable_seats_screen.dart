@@ -47,13 +47,13 @@ class _DisableSeatsScreenState extends State<DisableSeatsScreen> {
                 onSeatTap: _toggleSeatDisabled,
                 seatColor: (seatNumber) {
                   if (disabledSeats.contains(seatNumber)) {
-                    return Color(0xffff9800); // Color for disabled seats
+                    return Color(0xFF12839C); // Color for disabled seats
                   }
                   return Colors.white; // Color for available seats
                 },
                 legendItems: [
                   LegendItem(color: Colors.white, label: 'Available'),
-                  LegendItem(color: Color(0xffff9800), label: 'Disabled'),
+                  LegendItem(color: Color(0xFF12839C), label: 'Disabled'),
                 ],
               ),
             ),
@@ -77,7 +77,8 @@ class _DisableSeatsScreenState extends State<DisableSeatsScreen> {
           ),
         ),
         style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xffff9800),
+          backgroundColor:
+              Color(0xFF12839C), // Updated to match the disabled seat color
           minimumSize: Size(double.infinity, 50),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),

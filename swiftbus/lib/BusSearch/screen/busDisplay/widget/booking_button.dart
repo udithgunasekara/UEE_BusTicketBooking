@@ -1,7 +1,6 @@
 //
 
 import 'package:flutter/material.dart';
-import 'package:swiftbus/BusSearch/screen/paymentPage/show_bus_details_screen.dart';
 import 'package:swiftbus/SeatStructure/models/bus_model.dart';
 import 'package:swiftbus/SeatStructure/screens/seat_selection_screen.dart';
 

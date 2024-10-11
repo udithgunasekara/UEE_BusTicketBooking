@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:swiftbus/UserSupport/Service/DatabaseMethods.dart';
 
 class SacnQr extends StatefulWidget {
   const SacnQr({super.key});
@@ -12,7 +14,26 @@ class SacnQr extends StatefulWidget {
 class _SacnQrState extends State<SacnQr> {
   String scanResult = '';
   final MobileScannerController cameraController = MobileScannerController();
-  bool isScanning = false; // To track whether we are in scan mode
+  bool isScanning = false;
+  String? userId;
+
+  Future<void> _checkUserIdInPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? storedUserId = prefs.getString('userID');
+    if (storedUserId != null) {
+      setState(() {
+        userId = storedUserId;
+      });
+    } else {
+      Navigator.pushReplacementNamed(context, '/login');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkUserIdInPreferences();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +243,7 @@ class _SacnQrState extends State<SacnQr> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                updateUserRide(barcode); // Assuming you have this function defined
+                DatabaseMethods().setBusNo(userId!, barcode);
                 Navigator.pushNamed(context, '/home'); // Navigate to second screen
               },
               child: const Text('Yes'),
