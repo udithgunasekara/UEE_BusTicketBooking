@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftbus/UserSupport/Service/DatabaseMethods.dart';
+import 'package:swiftbus/authentication/services/firebase_authservice.dart';
 import 'package:swiftbus/common/NavBar.dart';
 
 class Inbox extends StatefulWidget {
@@ -14,6 +15,7 @@ class Inbox extends StatefulWidget {
 class _InboxState extends State<Inbox> {
   String? busId;
   String? userId;
+  final AuthService _auth = AuthService();
 
   Future<void> _checkUserIdInPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -51,6 +53,22 @@ class _InboxState extends State<Inbox> {
     _checkUserIdInPreferences();
   }
 
+  Future<void> _signOut(BuildContext context) async {
+    try {
+      await _auth.signOut();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('User signed out')),
+      );
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove('userID');
+
+      Navigator.pushReplacementNamed(context, '/login');
+    } catch (e) {
+      debugPrint('Sign out failed: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,8 +90,8 @@ class _InboxState extends State<Inbox> {
               style: TextStyle(fontSize: 24, color: Colors.black),
             ),
             IconButton(
-              icon: const Icon(Icons.settings, color: Colors.black),
-              onPressed: () {},
+              icon: const Icon(Icons.logout), // Logout icon
+              onPressed: () => _signOut(context),
             ),
           ],
         ),
@@ -81,7 +99,7 @@ class _InboxState extends State<Inbox> {
       body: busId == null
           ? const Center(child: CircularProgressIndicator()) // Show loading indicator until busId is loaded
           : StreamBuilder<QuerySnapshot>(
-              stream: DatabaseMethods().getaNotification(busId!),
+              stream: DatabaseMethods().getaNotification(busId!, userId!),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());

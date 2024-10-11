@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftbus/UserSupport/Service/DatabaseMethods.dart';
+import 'package:swiftbus/authentication/services/firebase_authservice.dart';
 import 'package:swiftbus/common/NavBar.dart';
 
 class ViewUserRequest extends StatefulWidget {
@@ -14,6 +15,7 @@ class ViewUserRequest extends StatefulWidget {
 class _ViewUserRequestState extends State<ViewUserRequest> {
   String? busId;
   String? userId;
+  final AuthService _auth = AuthService();
 
   Future<void> _checkUserIdInPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -50,6 +52,23 @@ class _ViewUserRequestState extends State<ViewUserRequest> {
     super.initState();
     _checkUserIdInPreferences();
   }
+
+  Future<void> _signOut(BuildContext context) async {
+    try {
+      await _auth.signOut();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('User signed out')),
+      );
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove('userID');
+
+      Navigator.pushReplacementNamed(context, '/login');
+    } catch (e) {
+      debugPrint('Sign out failed: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,8 +90,8 @@ class _ViewUserRequestState extends State<ViewUserRequest> {
               style: TextStyle(fontSize: 24, color: Colors.black),
             ),
             IconButton(
-              icon: const Icon(Icons.settings, color: Colors.black),
-              onPressed: () {},
+              icon: const Icon(Icons.logout), // Logout icon
+              onPressed: () => _signOut(context),
             ),
           ],
         ),
