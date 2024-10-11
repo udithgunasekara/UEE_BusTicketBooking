@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:swiftbus/BusSearch/service/firestore.dart';
+import 'package:swiftbus/common/Home.dart';
 
 class PaymentSummary extends StatefulWidget {
   final double totalPayment;
@@ -158,6 +159,12 @@ class _PaymentSummaryState extends State<PaymentSummary> {
               duration: Duration(seconds: 2),
             ),
           );
+
+          Future.delayed(Duration(seconds: 2), () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => Home()),
+            );
+          });
 
           print('Process Payment button pressed');
         },

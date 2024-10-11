@@ -103,8 +103,26 @@ class _SearchBusesScreenState extends State<SearchBusesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 100,
+        backgroundColor: Color(0xFFFD6905),
+        elevation: 0,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(20.0),
+            bottomRight: Radius.circular(20.0),
+          ),
+        ),
+        title: const Text(
+          'Search Buses',
+          style: TextStyle(
+            color: Color.fromARGB(255, 0, 0, 0),
+            fontSize: 24,
+          ),
+        ),
+      ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(30, 70, 30, 20),
+        padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
         child: Column(
           children: [
             // Input field for 'from' location
@@ -128,7 +146,16 @@ class _SearchBusesScreenState extends State<SearchBusesScreen> {
 
             // Set timer
             BusTimePicker(),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
+
+            Container(
+              height: 10, // Set the desired height
+              decoration: BoxDecoration(
+                color: Colors.black, // Background color
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            const SizedBox(height: 15),
 
             // Search button
             ElevatedButton(
@@ -179,7 +206,7 @@ class _SearchBusesScreenState extends State<SearchBusesScreen> {
                   return BusListItem(
                     busName: bus['busName'] ?? 'Unknown',
                     busType: bus['busType'] ?? 'Unknown',
-                    onboardTime: bus['onboardTime'] ?? 'Unknown',
+                    onboardTime: bus['fromTime'] ?? 'Unknown',
                     startLocation: bus['startLocation'] ?? 'Unknown',
                     destination: bus['destination'] ?? 'Unknown',
                     busNo: bus['busNo'] ?? 'Unknown',
@@ -193,7 +220,9 @@ class _SearchBusesScreenState extends State<SearchBusesScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: const Navbar(selectedIndex: 1,),
+      bottomNavigationBar: const Navbar(
+        selectedIndex: 1,
+      ),
     );
   }
 }

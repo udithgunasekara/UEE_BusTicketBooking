@@ -24,14 +24,17 @@ class FirestoreService {
         // Variables to track if both from and to locations are found
         bool fromFound = false;
         bool toFound = false;
+        String fromTime = ''; // Store time for the 'from' location
+        String toTime = ''; // Store time for the 'to' location
 
         // Iterate over the trip points to check if both "from" and "to" are present
         for (var point in tripPoints) {
-          //i remove the time condition for testing purposes && point['time'] == time
           if (point['location'] == from) {
             fromFound = true;
+            fromTime = point['time']; // Save the time of the 'from' location
           } else if (point['location'] == to) {
             toFound = true;
+            toTime = point['time']; // Save the time of the 'to' location
           }
 
           // If both are found, add the bus details to the matching buses list
@@ -43,6 +46,8 @@ class FirestoreService {
               'startLocation': busData['startLocation'],
               'destination': busData['destination'],
               'busNo': busData['busNo'],
+              'fromTime': fromTime, // Include the time for 'from' location
+              'toTime': toTime, // Include the time for 'to' location
               'docId': busDoc.id // Add the document ID here
             });
             break;
@@ -161,10 +166,10 @@ class FirestoreService {
       User? currentUser = FirebaseAuth.instance.currentUser;
 
       // Ensure a user is logged in before proceeding
-      // if (currentUser == null) {
-      //   print('No user is logged in.');
-      //   return;
-      // }
+      if (currentUser == null) {
+        print('No user is logged in.');
+        return;
+      }
 
       // Save the payment details in Firestore under the 'bookedUsers' collection
       await bookedUsers.add({
@@ -173,8 +178,8 @@ class FirestoreService {
         'to': to,
         'from': from,
         'totalPayment': totalPayment,
-        'userName': "samantha", //currentUser.displayName ?? currentUser.email,
-        'userId': "samantha log wela na", // currentUser.uid,
+        'userName': currentUser.displayName ?? currentUser.email,
+        'userId': currentUser.uid,
         'timestamp':
             FieldValue.serverTimestamp(), // Optional: store booking time
       });
