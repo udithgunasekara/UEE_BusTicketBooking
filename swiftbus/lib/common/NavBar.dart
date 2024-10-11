@@ -1,6 +1,6 @@
-// File: lib/widgets/navbar.dart
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:swiftbus/UserSupport/Conductor/ViewUserRequest.dart';
 import 'package:swiftbus/UserSupport/Service/DatabaseMethods.dart';
 import 'package:swiftbus/BusSearch/screen/busSearch/search_buses_screen.dart';
@@ -102,8 +102,8 @@ class _NavbarState extends State<Navbar> {
         icon: Icon(Icons.search),
         label: 'Bus Search',
       ),
-      const BottomNavigationBarItem(
-        icon: Icon(Icons.notifications),
+      BottomNavigationBarItem(
+        icon: _buildNotificationIcon(),
         label: 'Notifications',
       ),
     ];
@@ -135,20 +135,53 @@ class _NavbarState extends State<Navbar> {
     );
   }
 
+  Widget _buildNotificationIcon() {
+    if (busId != null && userId != null) {
+      return StreamBuilder<QuerySnapshot>(
+        stream: DatabaseMethods().getaNotification(busId!, userId!),
+        builder: (context, snapshot) {
+          bool hasUnread = false;
+
+          if (snapshot.hasData) {
+            // Check if any message is unread
+            hasUnread = snapshot.data!.docs.any((doc) => doc['isread'] == false);
+          }
+
+          return Stack(
+            children: [
+              const Icon(Icons.notifications),
+              if (hasUnread)
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Container(
+                    padding: const EdgeInsets.all(2),
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 9,
+                      minHeight: 9,
+                    ),
+                  ),
+                ),
+            ],
+          );
+        },
+      );
+    } else {
+      return const Icon(Icons.notifications);
+    }
+  }
+
   void _handleNavigation(BuildContext context, int index) {
     switch (index) {
       case 0:
-      if(role == true){
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const Home()),
         );
-      }else{
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const Home()),
-        );
-      }
         break;
       case 1:
         Navigator.pushReplacement(
@@ -167,21 +200,21 @@ class _NavbarState extends State<Navbar> {
         );
         break;
       case 3:
-      if(tempRole == true){
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ViewUserRequest(),
-          ),
-        );
-      }else{
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ViewPreviousRequests(),
-          ),
-        );
-      }
+        if (tempRole == true) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ViewUserRequest(),
+            ),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ViewPreviousRequests(),
+            ),
+          );
+        }
         break;
     }
   }

@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
           // primaryColor: Color(0xFFFD6905), // Primary color (Orange)
           //accentColor: Color(0xFF129C38) // Accent color (Green)
         ),
-        // initialRoute: '/home',
+        initialRoute: '/home',
         routes: {
           '/home': (context) => const Home(),
           '/login': (context) => const LoginPage(),
