@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../../SeatStructure/screens/reservations_screen.dart'; // Make sure to import the ReservationsScreen
 
 class Busdetailswidget extends StatelessWidget {
   final String? userId;
@@ -25,7 +26,7 @@ class Busdetailswidget extends StatelessWidget {
 
         if (buses.isEmpty) {
           return const Padding(
-            padding:  EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.0),
             child: Text('No buses found. Please add a new bus.'),
           );
         }
@@ -56,13 +57,28 @@ class Busdetailswidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('$busNo - $busName',
-                              style: const TextStyle(fontWeight: FontWeight.bold)),
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold)),
                           Text('$startLocation - $destination'),
                           Text('Departure: $departureDate at $departureTime'),
                         ],
                       ),
                     ),
-                    const Icon(Icons.arrow_forward, color: Colors.green),
+                    IconButton(
+                      icon:
+                          const Icon(Icons.arrow_forward, color: Colors.green),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ReservationsScreen(
+                              busNumber: busNo,
+                              busDetails: bus,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
