@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftbus/authentication/services/firebase_authservice.dart';
 import 'package:swiftbus/busRegistration/conducterHome.dart';
 import 'package:swiftbus/common/Home.dart';
+import 'package:swiftbus/common/onboarding_page.dart';
 
 class Loginwidget extends StatefulWidget {
   const Loginwidget({super.key});
@@ -13,7 +14,6 @@ class Loginwidget extends StatefulWidget {
 }
 
 class _LoginwidgetState extends State<Loginwidget> {
-
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final AuthService _auth = AuthService();
@@ -24,30 +24,45 @@ class _LoginwidgetState extends State<Loginwidget> {
   bool _isEmailEmpty = false;
   bool _isPasswordEmpty = false;
 
-
   Future<void> _login() async {
-
     setState(() {
       _isEmailEmpty = _emailController.text.isEmpty;
       _isPasswordEmpty = _passwordController.text.isEmpty;
     });
 
-    if(_isEmailEmpty || _isPasswordEmpty){
+    if (_isEmailEmpty || _isPasswordEmpty) {
       setState(() {
         _errormessage = "Please fill in all fields";
       });
       return;
-    }else{
-      error = await _auth.signInWithEmailAndPassword(_emailController.text, _passwordController.text);
-      if(error != null){
+    } else {
+      error = await _auth.signInWithEmailAndPassword(
+          _emailController.text, _passwordController.text);
+      if (error != null) {
         setState(() {
           _errormessage = error;
         });
-      }else{
+      } else {
         User? user = FirebaseAuth.instance.currentUser;
-        _setUserIDInPreferences(user!.uid); 
+        _setUserIDInPreferences(user!.uid);
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const Home()),
+          /* MaterialPageRoute(builder: (context) => const Home()),
+          (Route<dynamic> route) => false, */
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                const OnboardingPage(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              const begin = Offset(0.0, 1.0);
+              const end = Offset.zero;
+              const curve = Curves.easeInOut;
+              var tween =
+                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+              var offsetAnimation = animation.drive(tween);
+              return SlideTransition(position: offsetAnimation, child: child);
+            },
+            transitionDuration: const Duration(milliseconds: 500),
+          ),
           (Route<dynamic> route) => false,
         );
       }
@@ -59,14 +74,13 @@ class _LoginwidgetState extends State<Loginwidget> {
     await prefs.setString('userID', userId);
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
-        border: Border.all(width: 3, color: const Color.fromARGB(255, 71, 145, 2)),
+        border:
+            Border.all(width: 3, color: const Color.fromARGB(255, 71, 145, 2)),
         borderRadius: const BorderRadius.all(Radius.circular(30)),
         color: Colors.green[200],
         boxShadow: [
@@ -114,11 +128,11 @@ class _LoginwidgetState extends State<Loginwidget> {
                     //border when ther is no input and its not foucesed
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide:  BorderSide(
-                            color:_isEmailEmpty 
-                                      ? Colors.red
-                                      :const Color.fromARGB(255, 33, 116, 1),
-                             width: 3.0)),
+                        borderSide: BorderSide(
+                            color: _isEmailEmpty
+                                ? Colors.red
+                                : const Color.fromARGB(255, 33, 116, 1),
+                            width: 3.0)),
                   ),
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -154,10 +168,10 @@ class _LoginwidgetState extends State<Loginwidget> {
                     //border when ther is no input and its not foucesed
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
-                        borderSide:  BorderSide(
-                            color: _isEmailEmpty 
-                                      ? Colors.red
-                                      :const Color.fromARGB(255, 33, 116, 1),
+                        borderSide: BorderSide(
+                            color: _isEmailEmpty
+                                ? Colors.red
+                                : const Color.fromARGB(255, 33, 116, 1),
                             width: 3.0)),
 
                     suffixIcon: IconButton(
@@ -170,7 +184,7 @@ class _LoginwidgetState extends State<Loginwidget> {
                     ),
                   ),
                   controller: _passwordController,
-                ),                
+                ),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: _errormessage != null
@@ -183,7 +197,7 @@ class _LoginwidgetState extends State<Loginwidget> {
                         )
                       : const SizedBox.shrink(),
                 ),
-                
+
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
