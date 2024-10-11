@@ -3,8 +3,84 @@ import '../models/bus_model.dart';
 import '../widgets/seat_layout.dart';
 import '../widgets/legend.dart';
 import '../widgets/trip_info.dart';
+import '../firestore-service-update.dart';
 
-class ReservationsScreen extends StatelessWidget {
+class ReservationsScreen extends StatefulWidget {
+  @override
+  _ReservationsScreenState createState() => _ReservationsScreenState();
+}
+
+class _ReservationsScreenState extends State<ReservationsScreen> {
+  final FirestoreService _firestoreService = FirestoreService();
+  List<Map<String, dynamic>> _bookedBuses = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchBookedBuses();
+  }
+
+  Future<void> _fetchBookedBuses() async {
+    setState(() => _isLoading = true);
+    _bookedBuses = await _firestoreService.getBookedBuses();
+    setState(() => _isLoading = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('My Reservations'),
+      ),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : _bookedBuses.isEmpty
+              ? Center(child: Text('No reservations found.'))
+              : ListView.builder(
+                  itemCount: _bookedBuses.length,
+                  itemBuilder: (context, index) {
+                    final bus = _bookedBuses[index];
+                    return Card(
+                      margin: EdgeInsets.all(8),
+                      child: ListTile(
+                        title: Text('Bus ${bus['busName']}'),
+                        subtitle: Text('From: ${bus['from']} To: ${bus['to']}'),
+                        trailing:
+                            Text('Seats: ${bus['seatNumbers'].join(', ')}'),
+                        onTap: () => _showBusDetails(context, bus),
+                      ),
+                    );
+                  },
+                ),
+    );
+  }
+
+  void _showBusDetails(BuildContext context, Map<String, dynamic> bus) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => BusDetailsScreen(
+          from: bus['from'],
+          to: bus['to'],
+          date: bus['timestamp'].toDate().toString(),
+          time: bus['fromTime'],
+          reservedSeats: List<int>.from(bus['seatNumbers']),
+          disabledSeats: List<int>.from(bus['disabledSeats'] ?? []),
+          busModel: BusModel(
+            id: bus['busId'],
+            name: bus['busName'],
+            imageUrl: bus['imageUrl'] ?? '/api/placeholder/300/200',
+            totalSeats: bus['totalSeats'],
+            seatMap: List<List<int?>>.from(
+                bus['seatMap'].map((row) => List<int?>.from(row))),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class BusDetailsScreen extends StatelessWidget {
   final String from;
   final String to;
   final String date;
@@ -13,7 +89,7 @@ class ReservationsScreen extends StatelessWidget {
   final List<int> disabledSeats;
   final BusModel busModel;
 
-  ReservationsScreen({
+  BusDetailsScreen({
     required this.from,
     required this.to,
     required this.date,
@@ -26,98 +102,40 @@ class ReservationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildAppBar(context),
-            TripInfo(
-              from: from,
-              to: to,
-              date: date,
-              time: time,
-              availableSeats: busModel.totalSeats -
-                  disabledSeats.length -
-                  reservedSeats.length,
-            ),
-            Expanded(
-              child: SeatLayout(
-                seatMap: busModel.seatMap,
-                disabledSeats: Set.from(disabledSeats),
-                onSeatTap: null,
-                seatColor: (seatNumber) {
-                  if (reservedSeats.contains(seatNumber)) {
-                    return Colors.green;
-                  } else if (disabledSeats.contains(seatNumber)) {
-                    return Colors.blue;
-                  } else {
-                    return Colors.grey[300]!;
-                  }
-                },
-                legendItems: [
-                  LegendItem(color: Colors.green, label: 'Reserved'),
-                  LegendItem(color: Colors.grey[300]!, label: 'Not Reserved'),
-                  LegendItem(color: Colors.blue, label: 'Disabled'),
-                ],
-              ),
-            ),
-            _buildDetailsButton(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAppBar(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      color: Colors.blue[700],
-      child: Row(
+      appBar: AppBar(title: Text('Bus Details')),
+      body: Column(
         children: [
-          IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => Navigator.of(context).pop(),
+          TripInfo(
+            from: from,
+            to: to,
+            date: date,
+            time: time,
+            availableSeats: busModel.totalSeats -
+                disabledSeats.length -
+                reservedSeats.length,
           ),
           Expanded(
-            child: Text(
-              'Reservations',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
+            child: SeatLayout(
+              seatMap: busModel.seatMap,
+              disabledSeats: Set.from(disabledSeats),
+              onSeatTap: null,
+              seatColor: (seatNumber) {
+                if (reservedSeats.contains(seatNumber)) {
+                  return Colors.green;
+                } else if (disabledSeats.contains(seatNumber)) {
+                  return Colors.blue;
+                } else {
+                  return Colors.grey[300]!;
+                }
+              },
+              legendItems: [
+                LegendItem(color: Colors.green, label: 'Reserved'),
+                LegendItem(color: Colors.grey[300]!, label: 'Not Reserved'),
+                LegendItem(color: Colors.blue, label: 'Disabled'),
+              ],
             ),
           ),
-          SizedBox(width: 48),
         ],
-      ),
-    );
-  }
-
-  Widget _buildDetailsButton() {
-    return Container(
-      padding: EdgeInsets.all(16),
-      child: ElevatedButton(
-        onPressed: () {
-          // TODO: Implement details action
-        },
-        child: Text(
-          'Details',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.orange,
-          minimumSize: Size(double.infinity, 50),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          elevation: 2,
-        ),
       ),
     );
   }
