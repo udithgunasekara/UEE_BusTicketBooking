@@ -22,26 +22,35 @@ class _InboxState extends State<Inbox> {
       setState(() {
         userId = storedUserId;
       });
+      // Now that userId is set, you can fetch the busId
+      _fetchBusId();
+    } else {
+      Navigator.pushReplacementNamed(context, '/login');
+    }
+  }
+
+  void _fetchBusId() {
+    if (userId != null) {
+      DatabaseMethods().getBusId(userId!).listen((snapshot) {
+        if (snapshot.docs.isNotEmpty) {
+          setState(() {
+            busId = snapshot.docs.first['busid'];
+          });
+        } else {
+          setState(() {
+            busId = null;
+          });
+        }
+      });
     }
   }
 
   @override
   void initState() {
     super.initState();
-    // Stream to listen for busId changes and update it
     _checkUserIdInPreferences();
-    DatabaseMethods().getBusId(userId!).listen((snapshot) {
-      if (snapshot.docs.isNotEmpty) {
-        setState(() {
-          busId = snapshot.docs.first['busid'];
-        });
-      } else {
-        setState(() {
-          busId = null;
-        });
-      }
-    });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,77 +78,73 @@ class _InboxState extends State<Inbox> {
           ],
         ),
       ),
-      body: 
-      StreamBuilder<QuerySnapshot>(
-        stream: DatabaseMethods().getaNotification(busId!), // Stream of notifications
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: busId == null
+          ? const Center(child: CircularProgressIndicator()) // Show loading indicator until busId is loaded
+          : StreamBuilder<QuerySnapshot>(
+              stream: DatabaseMethods().getaNotification(busId!),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
 
-          if (snapshot.hasError) {
-            return const Center(child: Text("Error retrieving notifications"));
-          }
+                if (snapshot.hasError) {
+                  return const Center(child: Text("Error retrieving notifications"));
+                }
 
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text("No notifications available"));
-          }
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return const Center(child: Text("No notifications available"));
+                }
 
-          // Sorting and displaying notifications
-          List<QueryDocumentSnapshot> docs = snapshot.data!.docs;
-          docs.sort((a, b) {
-            bool isReadA = a['isread'] ?? false;
-            bool isReadB = b['isread'] ?? false;
-            return isReadA == isReadB ? 0 : (isReadA ? 1 : -1); // Unread first
-          });
+                // Sorting and displaying notifications
+                List<QueryDocumentSnapshot> docs = snapshot.data!.docs;
+                docs.sort((a, b) {
+                  bool isReadA = a['isread'] ?? false;
+                  bool isReadB = b['isread'] ?? false;
+                  return isReadA == isReadB ? 0 : (isReadA ? 1 : -1); // Unread first
+                });
 
-          return ListView.builder(
-            itemCount: docs.length,
-            itemBuilder: (context, index) {
-              var notification = docs[index];
-              bool isRead = notification['isread'] ?? false;
-              String title;
-              if(isRead){
-                title = 'Old Message';
-              }else{
-                title = 'New Message';
-              }
-              String description = notification['message'];
+                return ListView.builder(
+                  itemCount: docs.length,
+                  itemBuilder: (context, index) {
+                    var notification = docs[index];
+                    bool isRead = notification['isread'] ?? false;
+                    String title = isRead ? 'Old Message' : 'New Message';
+                    String description = notification['message'];
 
-              return Container(
-                margin: const EdgeInsets.all(8.0),
-                padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: isRead ? Colors.grey[300] : Colors.blue[100], // Blue for unread
-                  borderRadius: BorderRadius.circular(15.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                    return Container(
+                      margin: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: isRead ? Colors.grey[300] : Colors.blue[100], // Blue for unread
+                        borderRadius: BorderRadius.circular(15.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 2,
+                            blurRadius: 5,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(description),
-                  ],
-                ),
-              );
-            },
-          );
-        },
-      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(description),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
       bottomNavigationBar: Navbar(context),
     );
   }

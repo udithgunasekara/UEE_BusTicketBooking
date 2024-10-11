@@ -22,6 +22,26 @@ class _ViewUserRequestState extends State<ViewUserRequest> {
       setState(() {
         userId = storedUserId;
       });
+      // Now that userId is set, you can fetch the busId
+      _fetchBusId();
+    } else {
+      Navigator.pushReplacementNamed(context, '/login');
+    }
+  }
+
+  void _fetchBusId() {
+    if (userId != null) {
+      DatabaseMethods().getBusId(userId!).listen((snapshot) {
+        if (snapshot.docs.isNotEmpty) {
+          setState(() {
+            busId = snapshot.docs.first['busid'];
+          });
+        } else {
+          setState(() {
+            busId = null;
+          });
+        }
+      });
     }
   }
 
@@ -29,17 +49,6 @@ class _ViewUserRequestState extends State<ViewUserRequest> {
   void initState() {
     super.initState();
     _checkUserIdInPreferences();
-    DatabaseMethods().getBusId(userId!).listen((snapshot) {
-      if (snapshot.docs.isNotEmpty) {
-        setState(() {
-          busId = snapshot.docs.first['busid'];
-        });
-      } else {
-        setState(() {
-          busId = null;
-        });
-      }
-    });
   }
   @override
   Widget build(BuildContext context) {

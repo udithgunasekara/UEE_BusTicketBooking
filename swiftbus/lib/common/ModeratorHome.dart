@@ -21,25 +21,33 @@ class _ConductorHomeState extends State<ConductorHome> {
       setState(() {
         userId = storedUserId;
       });
+      // Now that userId is set, you can fetch the busId
+      _fetchBusId();
+    } else {
+      Navigator.pushReplacementNamed(context, '/login');
+    }
+  }
+
+  void _fetchBusId() {
+    if (userId != null) {
+      DatabaseMethods().getBusId(userId!).listen((snapshot) {
+        if (snapshot.docs.isNotEmpty) {
+          setState(() {
+            busId = snapshot.docs.first['busid'];
+          });
+        } else {
+          setState(() {
+            busId = null;
+          });
+        }
+      });
     }
   }
 
   @override
   void initState() {
     super.initState();
-    // Stream to listen for busId changes and update it
     _checkUserIdInPreferences();
-    DatabaseMethods().getBusId(userId!).listen((snapshot) {
-      if (snapshot.docs.isNotEmpty) {
-        setState(() {
-          busId = snapshot.docs.first['busid'];
-        });
-      } else {
-        setState(() {
-          busId = null;
-        });
-      }
-    });
   }
   @override
   Widget build(BuildContext context) {

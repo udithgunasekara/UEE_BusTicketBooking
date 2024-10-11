@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         textTheme: GoogleFonts.interTextTheme(),
       ),
-      initialRoute: '/chome',
+      initialRoute: '/home',
       routes: {
         '/home': (context) => const Home(),
         '/login' : (context) => const LoginPage(),
