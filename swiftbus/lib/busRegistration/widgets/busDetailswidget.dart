@@ -18,14 +18,14 @@ class Busdetailswidget extends StatelessWidget {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
 
         final buses = snapshot.data?.docs ?? [];
 
         if (buses.isEmpty) {
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
+          return const Padding(
+            padding:  EdgeInsets.all(16.0),
             child: Text('No buses found. Please add a new bus.'),
           );
         }
@@ -42,10 +42,10 @@ class Busdetailswidget extends StatelessWidget {
             final departureDate = bus['departureDate'] ?? '';
 
             return Card(
-              margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: BorderSide(color: Colors.green, width: 2),
+                side: const BorderSide(color: Colors.green, width: 2),
               ),
               child: Padding(
                 padding: EdgeInsets.all(16),
@@ -56,13 +56,13 @@ class Busdetailswidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('$busNo - $busName',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
+                              style: const TextStyle(fontWeight: FontWeight.bold)),
                           Text('$startLocation - $destination'),
                           Text('Departure: $departureDate at $departureTime'),
                         ],
                       ),
                     ),
-                    Icon(Icons.arrow_forward, color: Colors.green),
+                    const Icon(Icons.arrow_forward, color: Colors.green),
                   ],
                 ),
               ),
