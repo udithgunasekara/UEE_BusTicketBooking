@@ -1,16 +1,15 @@
 // File: lib/widgets/navbar.dart
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:swiftbus/UserSupport/Conductor/ViewUserRequest.dart';
 import 'package:swiftbus/UserSupport/Service/DatabaseMethods.dart';
 import 'package:swiftbus/BusSearch/screen/busSearch/search_buses_screen.dart';
 import 'package:swiftbus/UserSupport/Passenger/viewPreviousRequest.dart';
 import 'package:swiftbus/common/Home.dart';
 import 'package:swiftbus/common/inbox.dart';
 
-// File: lib/widgets/navbar.dart
 class Navbar extends StatefulWidget {
-  final int selectedIndex;  // Pass the selectedIndex from each screen
+  final int selectedIndex; // Pass the selectedIndex from each screen
 
   const Navbar({Key? key, required this.selectedIndex}) : super(key: key);
 
@@ -21,6 +20,8 @@ class Navbar extends StatefulWidget {
 class _NavbarState extends State<Navbar> {
   String? busId;
   String? userId;
+  bool? role;
+  bool? tempRole;
   bool isLoading = true;
 
   @override
@@ -32,15 +33,21 @@ class _NavbarState extends State<Navbar> {
   Future<void> _initializeUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? storedUserId = prefs.getString('userID');
+    bool? storedRole = prefs.getBool('role');
+    bool? storedTempRole = prefs.getBool('temprole');
 
     if (storedUserId != null) {
       setState(() {
         userId = storedUserId;
+        role = storedRole;
+        tempRole = storedTempRole;
       });
       _fetchBusId();
     } else {
       setState(() {
         isLoading = false;
+        role = false;
+        tempRole = false;
       });
     }
   }
@@ -85,31 +92,43 @@ class _NavbarState extends State<Navbar> {
   }
 
   BottomNavigationBar _buildBottomNavigationBar(BuildContext context) {
+    // Build the items based on role
+    List<BottomNavigationBarItem> items = [
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.home),
+        label: 'Home',
+      ),
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.search),
+        label: 'Bus Search',
+      ),
+      const BottomNavigationBarItem(
+        icon: Icon(Icons.notifications),
+        label: 'Notifications',
+      ),
+    ];
+
+    // Add Requests or Support item based on role
+    if (tempRole == true) {
+      items.add(const BottomNavigationBarItem(
+        icon: Icon(Icons.support_agent),
+        label: 'Support',
+      ));
+    } else {
+      items.add(const BottomNavigationBarItem(
+        icon: Icon(Icons.support_agent),
+        label: 'Requests',
+      ));
+    }
+
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       backgroundColor: Colors.transparent,
       elevation: 0,
-      selectedItemColor: Color(0xFFFD6905),
+      selectedItemColor: const Color(0xFFFD6905),
       unselectedItemColor: Colors.black,
-      currentIndex: widget.selectedIndex,  // Use the passed selectedIndex
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          label: 'Bus Search',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.notifications),
-          label: 'Notifications',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.support_agent),
-          label: 'Requests',
-        ),
-      ],
+      currentIndex: widget.selectedIndex, // Use the passed selectedIndex
+      items: items, // Use the dynamic items list
       onTap: (index) {
         _handleNavigation(context, index);
       },
@@ -119,10 +138,17 @@ class _NavbarState extends State<Navbar> {
   void _handleNavigation(BuildContext context, int index) {
     switch (index) {
       case 0:
+      if(role == true){
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const Home()),
         );
+      }else{
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Home()),
+        );
+      }
         break;
       case 1:
         Navigator.pushReplacement(
@@ -141,12 +167,21 @@ class _NavbarState extends State<Navbar> {
         );
         break;
       case 3:
+      if(tempRole == true){
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ViewUserRequest(),
+          ),
+        );
+      }else{
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => const ViewPreviousRequests(),
           ),
         );
+      }
         break;
     }
   }

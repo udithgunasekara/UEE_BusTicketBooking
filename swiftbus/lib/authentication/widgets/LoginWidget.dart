@@ -1,9 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftbus/authentication/services/firebase_authservice.dart';
-import 'package:swiftbus/busRegistration/conducterHome.dart';
-import 'package:swiftbus/common/Home.dart';
 import 'package:swiftbus/common/onboarding_page.dart';
 
 class Loginwidget extends StatefulWidget {
@@ -44,7 +43,14 @@ class _LoginwidgetState extends State<Loginwidget> {
         });
       } else {
         User? user = FirebaseAuth.instance.currentUser;
-        _setUserIDInPreferences(user!.uid);
+
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users') // Adjust the collection path if needed
+            .doc(user!.uid)
+            .get();
+        bool role = userDoc.get('isPassenger');
+        
+        _setUserIDInPreferences(user!.uid, role);
         Navigator.of(context).pushAndRemoveUntil(
           /* MaterialPageRoute(builder: (context) => const Home()),
           (Route<dynamic> route) => false, */
@@ -69,9 +75,13 @@ class _LoginwidgetState extends State<Loginwidget> {
     }
   }
 
-  Future<void> _setUserIDInPreferences(String userId) async {
+  Future<void> _setUserIDInPreferences(String userId, bool role) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('userID', userId);
+    await prefs.setBool('role', role);
+    if(!role){
+      await prefs.setBool('temprole', true);
+    }
   }
 
   @override
