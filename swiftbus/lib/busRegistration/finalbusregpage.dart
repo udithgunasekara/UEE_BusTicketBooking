@@ -285,7 +285,6 @@ class _FinalbusregpageState extends State<Finalbusregpage> {
   }
 }
 
-
 /* Container(
                 height: 100,
                 child: ListView.builder(

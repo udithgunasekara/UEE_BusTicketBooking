@@ -115,11 +115,15 @@ class _BusSeatLayoutOverviewState extends State<BusSeatLayoutOverview> {
 
   Future<void> _completeBooking() async {
     try {
+      // Flatten the 2D seatMap to a 1D array
+      final List<int?> flatSeatMap =
+          widget.busModel.seatMap.expand((row) => row).toList();
+
       final Map<String, dynamic> finalBusDetails = {
         ...widget.busDetails,
         'disabledSeats': disabledSeats.toList(),
         'totalSeats': widget.busModel.totalSeats,
-        'seatMap': widget.busModel.seatMap,
+        'seatMap': flatSeatMap, // Store flattened seatMap
       };
 
       await FirebaseFirestore.instance.collection('buses').add(finalBusDetails);
