@@ -178,10 +178,17 @@ class _NavbarState extends State<Navbar> {
   void _handleNavigation(BuildContext context, int index) {
     switch (index) {
       case 0:
+      if(tempRole == true){
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const Home()),
         );
+      }else{
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Home()),
+        );
+      }
         break;
       case 1:
         Navigator.pushReplacement(
