@@ -24,7 +24,6 @@ class _InboxState extends State<Inbox> {
       setState(() {
         userId = storedUserId;
       });
-      // Now that userId is set, you can fetch the busId
       _fetchBusId();
     } else {
       Navigator.pushReplacementNamed(context, '/login');
@@ -97,7 +96,7 @@ class _InboxState extends State<Inbox> {
         ),
       ),
       body: busId == null
-          ? const Center(child: CircularProgressIndicator()) // Show loading indicator until busId is loaded
+          ? const Center(child: CircularProgressIndicator())
           : StreamBuilder<QuerySnapshot>(
               stream: DatabaseMethods().getaNotification(busId!, userId!),
               builder: (context, snapshot) {
@@ -128,35 +127,43 @@ class _InboxState extends State<Inbox> {
                     bool isRead = notification['isread'] ?? false;
                     String title = isRead ? 'Old Message' : 'New Message';
                     String description = notification['message'];
+                    String notificationId = notification.id;
 
-                    return Container(
-                      margin: const EdgeInsets.all(8.0),
-                      padding: const EdgeInsets.all(16.0),
-                      decoration: BoxDecoration(
-                        color: isRead ? Colors.grey[300] : Colors.blue[100], // Blue for unread
-                        borderRadius: BorderRadius.circular(15.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            title,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                    return GestureDetector(
+                      onTap: () async {
+                        if (!isRead) {
+                          await DatabaseMethods().markNotificationAsRead(notificationId);
+                        }
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(16.0),
+                        decoration: BoxDecoration(
+                          color: isRead ? Colors.grey[300] : Colors.blue[100], // Blue for unread
+                          borderRadius: BorderRadius.circular(15.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: const Offset(0, 3),
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(description),
-                        ],
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              title,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(description),
+                          ],
+                        ),
                       ),
                     );
                   },

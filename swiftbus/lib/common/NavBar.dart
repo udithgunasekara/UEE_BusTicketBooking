@@ -8,7 +8,7 @@ import 'package:swiftbus/common/Home.dart';
 import 'package:swiftbus/common/inbox.dart';
 
 Widget Navbar(BuildContext context) {
-  String busId = 'B001';
+  String busId = 'nbc 1234';
   String userId = 'UCf3IXeDGidUZgyTTLbjx05fsx62';
   return Container(
     decoration: const BoxDecoration(

@@ -44,7 +44,7 @@ class DatabaseMethods {
           for (var doc in snapshot.docs) {
             String userId = doc["userId"];
             if(senderid != userId){
-              await createNotificatio(senderid, 'Passenger ask for help to find his lost item. Description: "$message"', busId, userId);
+            await createNotificatio(senderid, 'Passenger ask for help to find his lost item. Description: "$message"', busId, userId);
             }
           }
         } else {
@@ -79,6 +79,20 @@ class DatabaseMethods {
         .where('receiver', isEqualTo: userId)
         .snapshots();
   }
+
+  Future<void> markNotificationAsRead(String notificationId) async {
+  try {
+    await FirebaseFirestore.instance
+        .collection("Notification")
+        .doc(notificationId) // Use the specific notification ID
+        .update({
+      "isread": true,
+    });
+    print("Notification marked as read.");
+  } catch (e) {
+    print("Error updating Notification: $e");
+  }
+}
 
   Stream<QuerySnapshot> getBusId(String userId) {
     return FirebaseFirestore.instance
