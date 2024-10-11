@@ -44,8 +44,10 @@ class BusModelSelectionScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        BusSeatLayoutOverview(busModel: model),
+                    builder: (context) => BusSeatLayoutOverview(
+                      busModel: model,
+                      busDetails: {},
+                    ),
                   ),
                 );
               },

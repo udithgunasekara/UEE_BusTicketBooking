@@ -37,7 +37,7 @@ final List<BusModel> busModels = [
   BusModel(
     id: 'luxury-40',
     name: 'Luxury 40-Seater',
-    imageUrl: '/api/placeholder/300/200', // Replace with actual image URL
+    imageUrl: '/api/placeholder/300/200',
     totalSeats: 40,
     seatMap: [
       [01, 02, null, 03, 04],
@@ -52,5 +52,4 @@ final List<BusModel> busModels = [
       [37, 38, null, 39, 40],
     ],
   ),
-  // Add more bus models as needed
 ];
