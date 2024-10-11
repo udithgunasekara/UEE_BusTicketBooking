@@ -61,6 +61,8 @@ class _InboxState extends State<Inbox> {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.remove('userID');
+      await prefs.remove('role');
+      await prefs.remove('temprole');
 
       Navigator.pushReplacementNamed(context, '/login');
     } catch (e) {
