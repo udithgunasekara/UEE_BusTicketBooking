@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:popover/popover.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,7 +18,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   String? busId;
   String? userId;
+  Map<String, dynamic>? _userDetails;
   final AuthService _auth = AuthService();
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> _checkUserIdInPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -26,11 +29,19 @@ class _HomeState extends State<Home> {
       setState(() {
         userId = storedUserId;
       });
-      // Now that userId is set, you can fetch the busId
+      await _fetchUserDetails(storedUserId);
       _fetchBusId();
     } else {
       Navigator.pushReplacementNamed(context, '/login');
     }
+  }
+
+  Future<void> _fetchUserDetails(String uid) async {
+    DocumentSnapshot doc = await _firestore.collection('users').doc(uid).get();
+    final userdata = doc.data() as Map<String, dynamic>?;
+    setState(() {
+      _userDetails = userdata;
+    });
   }
 
   void _fetchBusId() {
@@ -70,9 +81,12 @@ class _HomeState extends State<Home> {
       debugPrint('Sign out failed: $e');
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
+    // Get the user's first name, if available
+    String firstName = _userDetails?['firstname'] ?? 'User';
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100,
@@ -87,35 +101,35 @@ class _HomeState extends State<Home> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
-              'Hello, User',
-              style: TextStyle(fontSize: 24, color: Colors.black),
+            Text(
+              'Hello, $firstName',
+              style: const TextStyle(fontSize: 24, color: Colors.black),
             ),
             IconButton(
-            icon: const Icon(Icons.logout), // Logout icon
-            onPressed: () => _signOut(context),
-          ),
+              icon: const Icon(Icons.logout), // Logout icon
+              onPressed: () => _signOut(context),
+            ),
           ],
         ),
       ),
       floatingActionButton: Builder(
         builder: (context) => FloatingActionButton(
           onPressed: () {
-            if(busId == null){
+            if (busId == null) {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SacnQr(),
-                  ),
-                );
-            }else{
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SacnQr(),
+                ),
+              );
+            } else {
               showPopover(
                 context: context,
                 bodyBuilder: (context) => Popup(userId: userId!, busId: busId!),
-                width: 250, 
+                width: 250,
                 height: 166,
                 backgroundColor: Colors.transparent,
-                direction: PopoverDirection.top
+                direction: PopoverDirection.top,
               );
             }
           },
