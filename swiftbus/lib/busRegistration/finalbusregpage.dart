@@ -99,7 +99,7 @@ class _FinalbusregpageState extends State<Finalbusregpage> {
       MaterialPageRoute(
         builder: (context) => BusSeatLayoutOverview(
           busDetails: widget.busDetails,
-          busModel: widget.busDetails['busModel'],
+          busModel: busModels[0], // Pass the actual BusModel instance here
         ),
       ),
     );
