@@ -346,32 +346,34 @@ Widget build(BuildContext context) {
         ],
       ),
     ),
-    floatingActionButton: FloatingActionButton(
-      onPressed: () {
-        if (busId == null) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const SacnQr(),
-            ),
-          );
-        } else {
-          showPopover(
-            context: context,
-            bodyBuilder: (context) => Popup(userId: userId!, busId: busId!),
-            width: 250,
-            height: 166,
-            backgroundColor: Colors.transparent,
-            direction: PopoverDirection.top,
-          );
-        }
-      },
-      tooltip: 'pop up box',
-      backgroundColor: Color(0xFFFD6905),
-      shape: const CircleBorder(),
-      child: const Icon(Icons.support_agent),
-    ),
-    bottomNavigationBar: const Navbar(selectedIndex: 0),
+    floatingActionButton: Builder(
+        builder: (context) => FloatingActionButton(
+          onPressed: () {
+            if (busId == null) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SacnQr(),
+                ),
+              );
+            } else {
+              showPopover(
+                context: context,
+                bodyBuilder: (context) => Popup(userId: userId!, busId: busId!),
+                width: 250,
+                height: 166,
+                backgroundColor: Colors.transparent,
+                direction: PopoverDirection.top,
+              );
+            }
+          },
+          tooltip: 'pop up box',
+          backgroundColor: Color(0xFFFD6905),
+          shape: const CircleBorder(),
+          child: const Icon(Icons.support_agent),
+        ),
+      ),
+    bottomNavigationBar: const Navbar(selectedIndex: 0,),
   );
 }
 }
