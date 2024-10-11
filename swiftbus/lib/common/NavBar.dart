@@ -9,6 +9,7 @@ import 'package:swiftbus/common/inbox.dart';
 
 Widget Navbar(BuildContext context) {
   String busId = 'B001';
+  String userId = 'UCf3IXeDGidUZgyTTLbjx05fsx62';
   return Container(
     decoration: const BoxDecoration(
       color: Colors.green,
@@ -18,7 +19,7 @@ Widget Navbar(BuildContext context) {
       ),
     ),
     child: StreamBuilder<QuerySnapshot>(
-      stream: DatabaseMethods().getaNotification(busId),
+      stream: DatabaseMethods().getaNotification(busId, userId),
       builder: (context, snapshot) {
         bool hasUnread = false;
 
