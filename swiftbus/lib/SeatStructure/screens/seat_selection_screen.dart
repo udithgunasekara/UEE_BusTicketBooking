@@ -149,7 +149,6 @@ import 'package:flutter/material.dart';
 import '../models/bus_model.dart';
 import '../widgets/seat_layout.dart';
 import '../widgets/legend.dart';
-import 'reservations_screen.dart';
 import '../widgets/trip_info.dart';
 import 'package:swiftbus/BusSearch/screen/paymentPage/show_bus_details_screen.dart';
 
