@@ -229,7 +229,7 @@ class Popup extends StatelessWidget {
                     onPressed: () {
                       String message = lostItemController.text;
                       if(askHelpFromPassengers){
-                        DatabaseMethods().createNotification(userId, 'Passenger ask for help to find his lost item. Description: "$message"', busId);
+                        DatabaseMethods().sendNotificationtoPassenger(userId, message, busId);
                       }
                       DatabaseMethods().createRequest(userId, 'Passenger ask for help to find his lost item. Description: "$message"', 'High', '0', busId);
                       Navigator.of(context).pop();

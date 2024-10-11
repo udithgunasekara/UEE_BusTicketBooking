@@ -35,11 +35,31 @@ class DatabaseMethods {
         .snapshots();
   }
 
-  Future<void> createNotification(String senderid, String message, String busId) async {
+  Future<void> sendNotificationtoPassenger(String senderid, String message, String busId) async {
+    try {
+      Stream<QuerySnapshot> snapshotStream = getUserId(busId);
+
+      snapshotStream.listen((QuerySnapshot snapshot) async {
+        if (snapshot.docs.isNotEmpty) {
+          for (var doc in snapshot.docs) {
+            String userId = doc["uid"];
+            await createNotificatio(senderid, 'Passenger ask for help to find his lost item. Description: "$message"', busId, userId);
+          }
+        } else {
+          print("No users found for the bus with busId: $busId");
+        }
+      });
+    } catch (e) {
+      print("Error retrieving user IDs: $e");
+    }
+  }
+
+  Future<void> createNotificatio(String senderid, String message, String busId, String reciverid) async {
     try {
       await FirebaseFirestore.instance.collection("Notification").doc().set({
         'message': message,
         'sender': senderid,
+        'receiver': reciverid,
         'busid': busId, 
         'isread': false
       });
@@ -50,10 +70,11 @@ class DatabaseMethods {
     }
   }
 
-  Stream<QuerySnapshot> getaNotification(String busId) {
+  Stream<QuerySnapshot> getaNotification(String busId, String userId) {
     return FirebaseFirestore.instance
         .collection("Notification")
         .where('busid', isEqualTo: busId)
+        .where('receiver', isEqualTo: userId)
         .snapshots();
   }
 
