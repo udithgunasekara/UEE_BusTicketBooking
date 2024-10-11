@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         textTheme: GoogleFonts.interTextTheme(),
       ),
-      initialRoute: '/busregistration',
+      initialRoute: '/chome',
       routes: {
         '/home': (context) => const Home(),
         '/login' : (context) => const LoginPage(),
