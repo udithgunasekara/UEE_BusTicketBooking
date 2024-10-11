@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftbus/authentication/services/firebase_authservice.dart';
 
 class Conducterhome extends StatefulWidget {
   final User? user;
-  const Conducterhome({super.key, this.user});
+  const Conducterhome({super.key,required this.user});
 
   @override
   State<Conducterhome> createState() => _ConducterhomeState();
@@ -16,7 +17,7 @@ class _ConducterhomeState extends State<Conducterhome> {
   Map<String, dynamic>? _userDetails ;
   final AuthService _auth = AuthService();
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  User? user = FirebaseAuth.instance.currentUser;
+  User? user;
 
   @override
   void initState() {
@@ -32,7 +33,7 @@ class _ConducterhomeState extends State<Conducterhome> {
       Navigator.pushReplacementNamed(context, '/login');
     } else {
       // If user ID is set, fetch user details
-      _fetchUserDetails(user!.uid);
+      _fetchUserDetails(userID);
     }
   }
   
@@ -42,18 +43,52 @@ class _ConducterhomeState extends State<Conducterhome> {
   final userdata =  doc.data() as Map<String, dynamic>?;
   setState(() {
     _userDetails = userdata;
+    user = FirebaseAuth.instance.currentUser;
   });
  }
 
+ Future<void> _signOut(BuildContext context) async {
+    try {
+      await _auth.signOut();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('User signed out')),
+      );
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.remove('userID');
+
+      Navigator.pushReplacementNamed(context, '/login');
+    } catch (e) {
+      debugPrint('Sign out failed: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: Colors.orange,
+        statusBarIconBrightness: Brightness.light));
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.orange,
         foregroundColor: Colors.black,
         elevation: 8,
+        shadowColor: Colors.black,
         automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: const Icon(
+                Icons.person), // Notification icon
+            onPressed: () {
+              Navigator.pushNamed(context, '/notifications');
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout), // Logout icon
+            onPressed: () => _signOut(context),
+          ),
+        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance.collection('buses').where('conducterId', isEqualTo: user!.uid).snapshots(),

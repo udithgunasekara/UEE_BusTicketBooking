@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:swiftbus/BusSearch/screen/busDisplay/bus_details_screen.dart';
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
         '/login' : (context) => const LoginPage(),
         '/signup' : (context) => const Signuppage(),
         '/busregistration' : (context) => const Busregistration(),
-        '/chome': (context) => const Conducterhome(),
+        '/chome': (context) => Conducterhome(user: FirebaseAuth.instance.currentUser),
         '/bustest': (context) => SearchBusesScreen(),
       }
     );
