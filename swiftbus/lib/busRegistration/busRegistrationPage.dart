@@ -22,8 +22,24 @@ class _BusregistrationState extends State<Busregistration> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
         statusBarColor: Colors.orange,
-        statusBarIconBrightness: Brightness.light));
+        statusBarIconBrightness: Brightness.dark));
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.orange,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: const Text(
+          "Register your bus",
+          style: TextStyle(
+            fontSize: 24,
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.w900,
+            color: Colors.black,
+          ),
+        ),
+      ),
       body:SafeArea(
         child: SingleChildScrollView(
           child: Container(
@@ -36,7 +52,7 @@ class _BusregistrationState extends State<Busregistration> {
               children: [
                 //top arc
                 Container(
-                  height: 80,
+                  height: 30,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: Colors.orange,
@@ -45,16 +61,6 @@ class _BusregistrationState extends State<Busregistration> {
                             (MediaQuery.of(context).size.width), 90),
                         bottomRight: Radius.elliptical(
                             (MediaQuery.of(context).size.width), 90)),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "Register your bus",
-                      style: TextStyle(
-                          fontSize: 24,
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.black),
-                    ),
                   ),
                 ),
 
