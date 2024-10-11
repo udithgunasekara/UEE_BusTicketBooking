@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftbus/UserSupport/Service/DatabaseMethods.dart';
 import 'package:swiftbus/authentication/services/firebase_authservice.dart';
+import 'package:swiftbus/busRegistration/widgets/busDetailswidget.dart';
 import 'package:swiftbus/common/NavBar.dart';
 
 class ConductorHome extends StatefulWidget {
@@ -109,6 +110,7 @@ class _ConductorHomeState extends State<ConductorHome> {
           ],
         ),
       ),
+      body: Busdetailswidget(userId: userId),
       bottomNavigationBar: Navbar(context),
     );
   }
