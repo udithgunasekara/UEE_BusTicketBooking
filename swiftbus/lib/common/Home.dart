@@ -312,7 +312,7 @@ Widget build(BuildContext context) {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Booked a Bus',
+                'Book a Bus',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -337,7 +337,7 @@ Widget build(BuildContext context) {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 image: const DecorationImage(
-                  image: AssetImage('assets/bus_queue.png'), // Use AssetImage for asset background
+                  image: AssetImage('assets/bus.png'), // Use AssetImage for asset background
                   fit: BoxFit.cover,
                 ),
               ),
