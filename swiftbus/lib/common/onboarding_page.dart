@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:swiftbus/common/Home.dart';
-import 'package:swiftbus/busRegistration/conducterHome.dart';
 import 'package:swiftbus/common/ModeratorHome.dart';
 
 class OnboardingPage extends StatelessWidget {
