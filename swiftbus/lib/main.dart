@@ -10,6 +10,7 @@ import 'package:swiftbus/authentication/signupPage.dart';
 import 'package:swiftbus/busRegistration/busRegistrationPage.dart';
 import 'package:swiftbus/busRegistration/conducterHome.dart';
 import 'package:swiftbus/common/Home.dart';
+import 'package:swiftbus/common/onboarding_page.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -28,11 +29,22 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey, // Attach the global key to the MaterialApp
-      home: const Home(), // Set the initial screen
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasData) {
+            return const OnboardingPage(); // Redirect to OnboardingPage when user is signed in
+          } else {
+            return const LoginPage();
+          }
+        },
+      ), // Set the initial screen
       theme: ThemeData(
         textTheme: GoogleFonts.interTextTheme(),
       ),
-      initialRoute: '/home',
+      // initialRoute: '/home',
       routes: {
         '/home': (context) => const Home(),
         '/login' : (context) => const LoginPage(),
@@ -40,6 +52,7 @@ class MyApp extends StatelessWidget {
         '/busregistration' : (context) => const Busregistration(),
         '/chome': (context) => Conducterhome(user: FirebaseAuth.instance.currentUser),
         '/bustest': (context) => SearchBusesScreen(),
+        '/onboarding': (context) => const OnboardingPage(),
       }
     );
   }
