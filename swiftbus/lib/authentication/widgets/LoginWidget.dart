@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftbus/authentication/services/firebase_authservice.dart';
-import 'package:swiftbus/busRegistration/conducterHome.dart';
-import 'package:swiftbus/common/Home.dart';
 import 'package:swiftbus/common/onboarding_page.dart';
 
 class Loginwidget extends StatefulWidget {
@@ -23,6 +21,7 @@ class _LoginwidgetState extends State<Loginwidget> {
 
   bool _isEmailEmpty = false;
   bool _isPasswordEmpty = false;
+  bool _isPasswordVisible = false;
 
   Future<void> _login() async {
     setState(() {
@@ -73,6 +72,34 @@ class _LoginwidgetState extends State<Loginwidget> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('userID', userId);
   }
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _isPasswordVisible = !_isPasswordVisible;
+    });
+  }
+
+  Future<void> _resetPassword() async {
+    if (_emailController.text.isEmpty) {
+      setState(() {
+        _errormessage = "Please enter your email address to reset password";
+      });
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password reset email sent. Please check your inbox.')),
+      );
+    } catch (e) {
+      setState(() {
+        _errormessage = "Failed to send password reset email. Please try again.";
+      });
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +171,7 @@ class _LoginwidgetState extends State<Loginwidget> {
 
                 //password
                 TextField(
-                  obscureText: true,
+                  obscureText: !_isPasswordVisible,
                   decoration: InputDecoration(
                     labelText: "Password",
                     //default label style
@@ -175,7 +202,7 @@ class _LoginwidgetState extends State<Loginwidget> {
                             width: 3.0)),
 
                     suffixIcon: IconButton(
-                      onPressed: () {},
+                      onPressed: _togglePasswordVisibility,
                       icon: const Icon(
                         Icons.visibility_off,
                         color: Colors.grey,
@@ -201,7 +228,7 @@ class _LoginwidgetState extends State<Loginwidget> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                      onPressed: () {},
+                      onPressed: _resetPassword,
                       child: Text(
                         "Forgot Password?",
                         style: TextStyle(color: Colors.blue[700]),

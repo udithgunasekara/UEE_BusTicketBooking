@@ -23,6 +23,7 @@ class _SignupwidgetState extends State<Signupwidget> {
   bool _isEmailEmpty = false;
   bool _isPasswordEmpty = false;
   bool _isConPasswordEmpty = false;
+  bool _isPasswordVisible = false;
 
 
   Future<void> _signup() async {
@@ -57,6 +58,11 @@ class _SignupwidgetState extends State<Signupwidget> {
       }
   }
   
+  void _togglePasswordVisibility() {
+    setState(() {
+      _isPasswordVisible = !_isPasswordVisible;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -308,7 +314,7 @@ class _SignupwidgetState extends State<Signupwidget> {
 
                             //Password
                             TextField(
-                              obscureText: true,
+                              obscureText: _isPasswordVisible,
                               decoration: InputDecoration(
                                 labelText: "Password",
                                 //default label style
@@ -339,7 +345,7 @@ class _SignupwidgetState extends State<Signupwidget> {
                                         width: 3.0)),
 
                                 suffixIcon: IconButton(
-                                  onPressed: () {},
+                                  onPressed: _togglePasswordVisibility,
                                   icon: const Icon(
                                     Icons.visibility_off,
                                     color: Colors.grey,
@@ -355,7 +361,7 @@ class _SignupwidgetState extends State<Signupwidget> {
                             // Confirm Password
 
                             TextField(
-                              obscureText: true,
+                              obscureText: _isPasswordVisible,
                               decoration: InputDecoration(
                                 labelText: "Confirm Password",
                                 //default label style
@@ -386,7 +392,7 @@ class _SignupwidgetState extends State<Signupwidget> {
                                         width: 3.0)),
 
                                 suffixIcon: IconButton(
-                                  onPressed: () {},
+                                  onPressed: _togglePasswordVisibility,
                                   icon: const Icon(
                                     Icons.visibility_off,
                                     color: Colors.grey,
