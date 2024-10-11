@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftbus/authentication/services/firebase_authservice.dart';
 
 class Conducterhome extends StatefulWidget {
@@ -13,50 +14,58 @@ class Conducterhome extends StatefulWidget {
 
 class _ConducterhomeState extends State<Conducterhome> {
   Map<String, dynamic>? _userDetails ;
-  // final AuthService _auth = AuthService();
+  final AuthService _auth = AuthService();
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   User? user = FirebaseAuth.instance.currentUser;
 
+  @override
+  void initState() {
+    super.initState();
+    _checkUserIdInPreferences;
+  }
+
+  Future<void> _checkUserIdInPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userID = prefs.getString('userID');
+    if (userID == null) {
+      // User ID is not set, redirect to login
+      Navigator.pushReplacementNamed(context, '/login');
+    } else {
+      // If user ID is set, fetch user details
+      _fetchUserDetails(user!.uid);
+    }
+  }
   
 
  Future<void> _fetchUserDetails(uid) async {
   DocumentSnapshot doc = await _firestore.collection('users').doc(uid).get();
   final userdata =  doc.data() as Map<String, dynamic>?;
-
   setState(() {
     _userDetails = userdata;
   });
  }
 
-
-
- @override
-  void initState() {
-    super.initState();
-    _fetchUserDetails(user!.uid);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Bus'),
+        title: Text('Home'),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
-        elevation: 0,
+        elevation: 8,
+        automaticallyImplyLeading: false,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
+      body: StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance.collection('buses').where('conducterId', isEqualTo: user!.uid).snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
+                  
                 }
 
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
                 }
 
                 final buses = snapshot.data?.docs ?? [];
@@ -112,9 +121,6 @@ class _ConducterhomeState extends State<Conducterhome> {
                 );
               },
             ),
-          ),
-        ],
-      ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:swiftbus/authentication/services/firebase_authservice.dart';
+import 'package:swiftbus/busRegistration/conducterHome.dart';
 
 class Loginwidget extends StatefulWidget {
   const Loginwidget({super.key});
@@ -44,7 +45,10 @@ class _LoginwidgetState extends State<Loginwidget> {
       }else{
         User? user = FirebaseAuth.instance.currentUser;
         _setUserIDInPreferences(user!.uid); 
-        Navigator.pushReplacementNamed(context, '/chome');
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => Conducterhome(user: user)),
+          (Route<dynamic> route) => false,
+        );
       }
     }
   }
