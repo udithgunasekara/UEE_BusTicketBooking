@@ -6,6 +6,7 @@ import 'package:swiftbus/UserSupport/Service/DatabaseMethods.dart';
 import 'package:swiftbus/BusSearch/screen/busSearch/search_buses_screen.dart';
 import 'package:swiftbus/UserSupport/Passenger/viewPreviousRequest.dart';
 import 'package:swiftbus/common/Home.dart';
+import 'package:swiftbus/common/ModeratorHome.dart';
 import 'package:swiftbus/common/inbox.dart';
 
 class Navbar extends StatefulWidget {
@@ -181,7 +182,7 @@ class _NavbarState extends State<Navbar> {
       if(tempRole == true){
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const Home()),
+          MaterialPageRoute(builder: (context) => const ConductorHome()),
         );
       }else{
         Navigator.pushReplacement(
