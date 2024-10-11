@@ -173,7 +173,7 @@ class _ViewUserRequestState extends State<ViewUserRequest> {
           );
         },
       ),
-      bottomNavigationBar: Navbar(context),
+      bottomNavigationBar: const Navbar(),
     );
   }
 }

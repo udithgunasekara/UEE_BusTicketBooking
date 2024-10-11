@@ -139,7 +139,7 @@ class _HomeState extends State<Home> {
           child: const Icon(Icons.support_agent),
         ),
       ),
-      bottomNavigationBar: Navbar(context),
+      bottomNavigationBar: const Navbar(),
     );
   }
 }

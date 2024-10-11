@@ -152,7 +152,7 @@ class ViewPreviousRequestsState extends State<ViewPreviousRequests> {
           );
         },
       ),
-      bottomNavigationBar: Navbar(context),
+      bottomNavigationBar: const Navbar(),
     );
   }
 }

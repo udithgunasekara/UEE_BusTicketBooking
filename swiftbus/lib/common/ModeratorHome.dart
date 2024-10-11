@@ -111,7 +111,7 @@ class _ConductorHomeState extends State<ConductorHome> {
         ),
       ),
       body: Busdetailswidget(userId: userId),
-      bottomNavigationBar: Navbar(context),
+      bottomNavigationBar: const Navbar(),
     );
   }
 }

@@ -170,7 +170,7 @@ class _InboxState extends State<Inbox> {
                 );
               },
             ),
-      bottomNavigationBar: Navbar(context),
+      bottomNavigationBar: const Navbar(),
     );
   }
 }
