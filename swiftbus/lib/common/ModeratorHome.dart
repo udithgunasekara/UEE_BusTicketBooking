@@ -112,6 +112,13 @@ class _ConductorHomeState extends State<ConductorHome> {
       ),
       body: Busdetailswidget(userId: userId),
       bottomNavigationBar: const Navbar(selectedIndex: 0,),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/busregistration');
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.orange,
+      ),
     );
   }
 }

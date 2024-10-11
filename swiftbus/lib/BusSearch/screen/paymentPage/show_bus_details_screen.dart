@@ -69,7 +69,11 @@ class _ShowBusDetailsScreenState extends State<ShowBusDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(' Make Your Payment'),
+        title: Text(
+          'Make Your Payment',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Color(0xFF129C38), // Add your desired color here
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -101,7 +105,6 @@ class _ShowBusDetailsScreenState extends State<ShowBusDetailsScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: const Navbar(selectedIndex: 1,),
     );
   }
 }

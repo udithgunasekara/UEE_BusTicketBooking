@@ -27,33 +27,35 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      navigatorKey: navigatorKey, // Attach the global key to the MaterialApp
-      home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
-          } else if (snapshot.hasData) {
-            return const OnboardingPage(); // Redirect to OnboardingPage when user is signed in
-          } else {
-            return const LoginPage();
-          }
-        },
-      ), // Set the initial screen
-      theme: ThemeData(
-        textTheme: GoogleFonts.interTextTheme(),
-      ),
-      // initialRoute: '/home',
-      routes: {
-        '/home': (context) => const Home(),
-        '/login' : (context) => const LoginPage(),
-        '/signup' : (context) => const Signuppage(),
-        '/busregistration' : (context) => const Busregistration(),
-        '/chome': (context) => Conducterhome(user: FirebaseAuth.instance.currentUser),
-        '/bustest': (context) => SearchBusesScreen(),
-        '/onboarding': (context) => const OnboardingPage(),
-      }
-    );
+        debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey, // Attach the global key to the MaterialApp
+        home: StreamBuilder<User?>(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            } else if (snapshot.hasData) {
+              return const OnboardingPage(); // Redirect to OnboardingPage when user is signed in
+            } else {
+              return const LoginPage();
+            }
+          },
+        ), // Set the initial screen
+        theme: ThemeData(
+          textTheme: GoogleFonts.interTextTheme(),
+          // primaryColor: Color(0xFFFD6905), // Primary color (Orange)
+          //accentColor: Color(0xFF129C38) // Accent color (Green)
+        ),
+        // initialRoute: '/home',
+        routes: {
+          '/home': (context) => const Home(),
+          '/login': (context) => const LoginPage(),
+          '/signup': (context) => const Signuppage(),
+          '/busregistration': (context) => const Busregistration(),
+          '/chome': (context) =>
+              Conducterhome(user: FirebaseAuth.instance.currentUser),
+          '/bustest': (context) => SearchBusesScreen(),
+          '/onboarding': (context) => const OnboardingPage(),
+        });
   }
 }
