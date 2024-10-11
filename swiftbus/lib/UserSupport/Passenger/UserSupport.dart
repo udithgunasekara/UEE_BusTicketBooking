@@ -35,7 +35,7 @@ class Popup extends StatelessWidget {
           Center( // Centering the button
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green, // Button color
+                backgroundColor: Color(0xFF129C38), // Button color
               ),
               child: const Text('Confirm', style: TextStyle(color: Colors.black),),
               onPressed: () {
@@ -107,7 +107,7 @@ class Popup extends StatelessWidget {
                                 }
                               });
                             },
-                            activeColor: Colors.green,
+                            activeColor: Color(0xFF129C38),
                           ),
                         ],
                       ),
@@ -117,7 +117,7 @@ class Popup extends StatelessWidget {
                           const Text('Medium'),
                           Switch(
                             value: mediumPriority,
-                            activeColor: Colors.green,
+                            activeColor: Color(0xFF129C38),
                             onChanged: (bool newValue) {
                               setState(() {
                                 highPriority = false;
@@ -139,7 +139,7 @@ class Popup extends StatelessWidget {
                           const Text('Low'),
                           Switch(
                             value: lowPriority,
-                            activeColor: Colors.green,
+                            activeColor: Color(0xFF129C38),
                             onChanged: (bool newValue) {
                               setState(() {
                                 highPriority = false;
@@ -160,7 +160,7 @@ class Popup extends StatelessWidget {
               Center( // Centering the button
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green, // Button color
+                    backgroundColor: Color(0xFF129C38), // Button color
                   ),
                   child: const Text('Confirm', style: TextStyle(color: Colors.black)),
                   onPressed: () {
@@ -208,7 +208,7 @@ class Popup extends StatelessWidget {
                       const Text('Ask help from passengers'),
                       Switch(
                         value: askHelpFromPassengers,
-                            activeColor: Colors.green,
+                            activeColor: Color(0xFF129C38),
                         onChanged: (bool newValue) {
                           setState(() {
                             askHelpFromPassengers = newValue;
@@ -223,7 +223,7 @@ class Popup extends StatelessWidget {
                 Center( // Centering the button
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green, // Button color
+                      backgroundColor: Color(0xFF129C38), // Button color
                     ),
                     child: const Text('Confirm', style: TextStyle(color: Colors.black),),
                     onPressed: () {
@@ -257,7 +257,7 @@ class Popup extends StatelessWidget {
           child: Container(
             height: 50,
             decoration: BoxDecoration(
-              color: Colors.orange, // Background color
+              color: Color(0xFFFD6905), // Background color
               border: Border.all(color: Colors.black, width: 2), // Black outline
               borderRadius: BorderRadius.circular(15), // Rounded corners
             ),
@@ -277,7 +277,7 @@ class Popup extends StatelessWidget {
           child: Container(
             height: 50,
             decoration: BoxDecoration(
-              color: Colors.orange, // Background color
+              color: Color(0xFFFD6905), // Background color
               border: Border.all(color: Colors.black, width: 2), // Black outline
               borderRadius: BorderRadius.circular(15), // Rounded corners
             ),
@@ -297,7 +297,7 @@ class Popup extends StatelessWidget {
           child: Container(
             height: 50,
             decoration: BoxDecoration(
-              color: Colors.orange, // Background color
+              color: Color(0xFFFD6905), // Background color
               border: Border.all(color: Colors.black, width: 2), // Black outline
               borderRadius: BorderRadius.circular(15), // Rounded corners
             ),
