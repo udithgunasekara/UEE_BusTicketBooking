@@ -82,20 +82,20 @@ class _BusregistrationState extends State<Busregistration> {
                         onNext: (intermediateDetails) {
                           setState(() {
                             busDetails = intermediateDetails;
+                            _pageController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeIn,
+                            );
                           });
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Finalbusregpage(
-                                busDetails: busDetails,
-                                onNext: (finalDetails) {
-                                  setState(() {
-                                    busDetails = finalDetails;
-                                  });
-                                },
-                              ),
-                            ),
-                          );
+                        },
+                      ),
+                      Finalbusregpage(
+                        busDetails: busDetails,
+                        onNext: (finalDetails) {
+                          setState(() {
+                            busDetails = finalDetails;
+                          });
+                          // The navigation to BusSeatLayoutOverview is handled within Finalbusregpage
                         },
                       ),
                     ],

@@ -35,6 +35,7 @@ class _BusSeatLayoutOverviewState extends State<BusSeatLayoutOverview> {
           children: [
             Expanded(
               child: SeatLayout(
+                reservedSeats: Set(),
                 seatMap: widget.busModel.seatMap,
                 disabledSeats: disabledSeats,
                 onSeatTap: null,

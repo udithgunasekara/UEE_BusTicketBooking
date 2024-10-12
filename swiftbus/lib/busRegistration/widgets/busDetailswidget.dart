@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../../SeatStructure/screens/reservations_screen.dart'; // Make sure to import the ReservationsScreen
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../SeatStructure/screens/reservations_screen.dart';
 
 class Busdetailswidget extends StatelessWidget {
   final String? userId;
@@ -48,38 +48,41 @@ class Busdetailswidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
                 side: const BorderSide(color: Colors.green, width: 2),
               ),
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('$busNo - $busName',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold)),
-                          Text('$startLocation - $destination'),
-                          Text('Departure: $departureDate at $departureTime'),
-                        ],
+              child: InkWell(
+                // Wrap with InkWell for tap functionality
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ReservationsScreen(
+                        busNo: busNo,
+                        from: startLocation,
+                        to: destination,
+                        date: departureDate,
+                        time: departureTime,
                       ),
                     ),
-                    IconButton(
-                      icon:
-                          const Icon(Icons.arrow_forward, color: Colors.green),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ReservationsScreen(
-                              busNumber: busNo,
-                              busDetails: bus,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
+                  );
+                },
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('$busNo - $busName',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold)),
+                            Text('$startLocation - $destination'),
+                            Text('Departure: $departureDate at $departureTime'),
+                          ],
+                        ),
+                      ),
+                      const Icon(Icons.arrow_forward, color: Colors.green),
+                    ],
+                  ),
                 ),
               ),
             );
