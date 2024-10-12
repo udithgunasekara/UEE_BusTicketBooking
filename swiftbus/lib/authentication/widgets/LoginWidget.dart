@@ -271,7 +271,7 @@ class _LoginwidgetState extends State<Loginwidget> {
                   height: 15,
                 ),
                 //other login methods
-                const Text(
+                /* const Text(
                   "Other Login Methods",
                   style: TextStyle(
                       color: Colors.black,
@@ -280,8 +280,8 @@ class _LoginwidgetState extends State<Loginwidget> {
                 ),
                 const SizedBox(
                   height: 10,
-                ),
-                Container(
+                ), */
+                /* Container(
                   width: MediaQuery.of(context).size.width * 0.3,
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -305,7 +305,7 @@ class _LoginwidgetState extends State<Loginwidget> {
                       ),
                     ],
                   ),
-                ),
+                ), */
                 const SizedBox(height: 18),
                 // New User? Register
                 Align(

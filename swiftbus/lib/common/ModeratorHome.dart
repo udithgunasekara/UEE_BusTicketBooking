@@ -92,6 +92,7 @@ class _ConductorHomeState extends State<ConductorHome> {
         toolbarHeight: 100,
         backgroundColor: Color(0xFFFD6905),
         elevation: 0,
+        automaticallyImplyLeading: false,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(20.0),
