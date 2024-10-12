@@ -18,10 +18,8 @@ class _BusregistrationState extends State<Busregistration> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.orange,
-      statusBarIconBrightness: Brightness.light,
-    ));
-
+        statusBarColor: Colors.orange,
+        statusBarIconBrightness: Brightness.dark));
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,

@@ -32,20 +32,11 @@ class OnboardingPage extends StatelessWidget {
               return Center(child: Text('Error: ${snapshot.error}', style: const TextStyle(color: Colors.white)));
             } else {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                Navigator.of(context).pushReplacement(
-                  PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) =>
-                      snapshot.data == true ? const Home() : const ConductorHome(),
-                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                      const begin = Offset(1.0, 0.0);
-                      const end = Offset.zero;
-                      const curve = Curves.easeInOut;
-                      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                      var offsetAnimation = animation.drive(tween);
-                      return SlideTransition(position: offsetAnimation, child: child);
-                    },
-                    transitionDuration: const Duration(milliseconds: 500),
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                    builder: (context) => snapshot.data == true ? const Home() : const ConductorHome(),
                   ),
+                  (Route<dynamic> route) => false,
                 );
               });
               return const _LoadingContent();

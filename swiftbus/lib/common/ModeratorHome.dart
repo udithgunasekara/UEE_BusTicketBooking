@@ -73,6 +73,8 @@ class _ConductorHomeState extends State<ConductorHome> {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.remove('userID');
+      await prefs.remove('role');
+      await prefs.remove('temprole');
 
       Navigator.pushReplacementNamed(context, '/login');
     } catch (e) {
