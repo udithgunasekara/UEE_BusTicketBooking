@@ -157,7 +157,26 @@ class _FinalbusregpageState extends State<Finalbusregpage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.orange,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: const Text(
+          "Register your bus",
+          style: TextStyle(
+            fontSize: 24,
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.w900,
+            color: Colors.black,
+          ),
+        ),
+      ),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child:SingleChildScrollView(
         child: Container(
             margin: EdgeInsets.symmetric(horizontal: 20),
             decoration: BoxDecoration(
@@ -174,7 +193,7 @@ class _FinalbusregpageState extends State<Finalbusregpage> {
                 ),
               ],
             ),
-            child: SingleChildScrollView(
+            
                 child: Column(children: [
               Padding(
                 padding: EdgeInsets.all(16),
@@ -281,7 +300,9 @@ class _FinalbusregpageState extends State<Finalbusregpage> {
                   ],
                 ),
               )
-            ]))));
+            ])
+            )) ),
+    );
   }
 }
 

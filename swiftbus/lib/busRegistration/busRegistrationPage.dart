@@ -61,7 +61,7 @@ class _BusregistrationState extends State<Busregistration> {
                       ),
                     ),
                   ),
-                  child: const Center(
+                  /* child: const Center(
                     child: Text(
                       "Register your bus",
                       style: TextStyle(
@@ -71,7 +71,7 @@ class _BusregistrationState extends State<Busregistration> {
                         color: Colors.black,
                       ),
                     ),
-                  ),
+                  ), */
                 ),
                 const SizedBox(height: 20),
                 SizedBox(
