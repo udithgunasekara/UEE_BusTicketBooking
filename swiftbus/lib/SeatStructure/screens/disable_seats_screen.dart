@@ -42,6 +42,7 @@ class _DisableSeatsScreenState extends State<DisableSeatsScreen> {
           children: [
             Expanded(
               child: SeatLayout(
+                reservedSeats: Set(), // Pass an empty set here
                 seatMap: widget.busModel.seatMap,
                 disabledSeats: Set(), // Pass an empty set here
                 onSeatTap: _toggleSeatDisabled,

@@ -196,6 +196,7 @@ class _SeatSelectionScreenState extends State<SeatSelectionScreen> {
             ),
             Expanded(
               child: SeatLayout(
+                reservedSeats: Set(),
                 seatMap: widget.busModel.seatMap,
                 disabledSeats: widget.disabledSeats,
                 onSeatTap: _toggleSeatSelection,
