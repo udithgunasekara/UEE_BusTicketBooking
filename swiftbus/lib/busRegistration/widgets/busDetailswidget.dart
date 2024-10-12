@@ -6,6 +6,15 @@ class Busdetailswidget extends StatelessWidget {
   final String? userId;
   const Busdetailswidget({super.key, this.userId});
 
+  String _formatDate(String dateString) {
+  try {
+    final date = DateTime.parse(dateString);
+    return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
+  } catch (e) {
+    return dateString; // Return the original string if parsing fails
+  }
+}
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -46,7 +55,7 @@ class Busdetailswidget extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: const BorderSide(color: Colors.green, width: 2),
+                side: const BorderSide(color: Color(0xFF129C38), width: 2),
               ),
               child: InkWell(
                 // Wrap with InkWell for tap functionality
@@ -72,11 +81,11 @@ class Busdetailswidget extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('$busNo - $busName',
+                            Text(busName.isNotEmpty ? '$busNo - $busName' : busNo,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold)),
                             Text('$startLocation - $destination'),
-                            Text('Departure: $departureDate at $departureTime'),
+                            Text('Departure: ${_formatDate(departureDate)} at $departureTime'),
                           ],
                         ),
                       ),

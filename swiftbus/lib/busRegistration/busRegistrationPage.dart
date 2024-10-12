@@ -23,6 +23,22 @@ class _BusregistrationState extends State<Busregistration> {
     ));
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.orange,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: const Text(
+          "Register your bus",
+          style: TextStyle(
+            fontSize: 24,
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.w900,
+            color: Colors.black,
+          ),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
@@ -32,7 +48,7 @@ class _BusregistrationState extends State<Busregistration> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  height: 80,
+                  height: 30,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: Colors.orange,
@@ -47,7 +63,7 @@ class _BusregistrationState extends State<Busregistration> {
                       ),
                     ),
                   ),
-                  child: const Center(
+                  /* child: const Center(
                     child: Text(
                       "Register your bus",
                       style: TextStyle(
@@ -57,7 +73,7 @@ class _BusregistrationState extends State<Busregistration> {
                         color: Colors.black,
                       ),
                     ),
-                  ),
+                  ), */
                 ),
                 const SizedBox(height: 20),
                 SizedBox(
