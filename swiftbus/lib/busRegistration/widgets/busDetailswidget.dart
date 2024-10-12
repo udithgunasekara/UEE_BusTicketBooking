@@ -1,9 +1,19 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../SeatStructure/screens/reservations_screen.dart';
 
 class Busdetailswidget extends StatelessWidget {
   final String? userId;
   const Busdetailswidget({super.key, this.userId});
+
+  String _formatDate(String dateString) {
+  try {
+    final date = DateTime.parse(dateString);
+    return "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}";
+  } catch (e) {
+    return dateString; // Return the original string if parsing fails
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +35,7 @@ class Busdetailswidget extends StatelessWidget {
 
         if (buses.isEmpty) {
           return const Padding(
-            padding:  EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.0),
             child: Text('No buses found. Please add a new bus.'),
           );
         }
@@ -45,25 +55,43 @@ class Busdetailswidget extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
-                side: const BorderSide(color: Colors.green, width: 2),
+                side: const BorderSide(color: Color(0xFF129C38), width: 2),
               ),
-              child: Padding(
-                padding: EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('$busNo - $busName',
-                              style: const TextStyle(fontWeight: FontWeight.bold)),
-                          Text('$startLocation - $destination'),
-                          Text('Departure: $departureDate at $departureTime'),
-                        ],
+              child: InkWell(
+                // Wrap with InkWell for tap functionality
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ReservationsScreen(
+                        busNo: busNo,
+                        from: startLocation,
+                        to: destination,
+                        date: departureDate,
+                        time: departureTime,
                       ),
                     ),
-                    const Icon(Icons.arrow_forward, color: Colors.green),
-                  ],
+                  );
+                },
+                child: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(busName.isNotEmpty ? '$busNo - $busName' : busNo,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold)),
+                            Text('$startLocation - $destination'),
+                            Text('Departure: ${_formatDate(departureDate)} at $departureTime'),
+                          ],
+                        ),
+                      ),
+                      const Icon(Icons.arrow_forward, color: Colors.green),
+                    ],
+                  ),
                 ),
               ),
             );
